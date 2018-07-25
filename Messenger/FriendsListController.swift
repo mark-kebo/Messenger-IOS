@@ -28,9 +28,10 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         provider = VKProvider()
-        provider?.getFriendsList(treatmentFriends: { (friends) in
-            self.bioFriends = friends
-            self.friendsList.reloadData()
+        //захват self
+        provider?.getFriendsList(treatmentFriends: { [weak weakSelf = self] (friends) in
+            weakSelf?.bioFriends = friends
+            weakSelf?.friendsList.reloadData()
         })
         // Зарегистрируем класс ячейки представления таблицы и его идентификатор повторного использования
         friendsList.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
