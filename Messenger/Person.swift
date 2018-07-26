@@ -9,6 +9,7 @@
 import Foundation
 
 struct Person {
-    var Name: String
-    var Surname: String
+    var name: String
+    var surname: String
+    var avaImgUrl: URL
 }

@@ -13,11 +13,11 @@ class VKProvider: FriendsListProviderProtocol {
     
     public func getFriendsList(treatmentFriends: @escaping ([Person]) -> Void) {
         var bioFriends = [Person]()
-        VKRequest(method: "friends.get", parameters: ["fields":"count"]).execute(resultBlock: { (response) in
+        VKRequest(method: "friends.get", parameters: ["fields":"photo_50"]).execute(resultBlock: { (response) in
             let json = response?.json as! Dictionary<String, Any>
             let items = json["items"] as! Array<Dictionary<String, Any>>
             items.forEach {
-                bioFriends.append(Person(Name: $0["first_name"] as! String, Surname: $0["last_name"] as! String))
+                bioFriends.append(Person(name: $0["first_name"] as! String, surname: $0["last_name"] as! String, avaImgUrl: URL(string: $0["photo_50"] as! String)!))
             }
             treatmentFriends(bioFriends)
         }, errorBlock: { (error) in

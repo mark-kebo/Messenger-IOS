@@ -27,7 +27,7 @@ import VK_ios_sdk
 
 class LoginController: UIViewController, VKSdkDelegate, VKSdkUIDelegate  {
     private let appId = "6637865"
-    private let SCOPE = [VK_PER_FRIENDS, VK_PER_MESSAGES, VK_PER_EMAIL]
+    private let SCOPE = [VK_PER_FRIENDS, VK_PER_MESSAGES, VK_PER_EMAIL, VK_PER_PHOTOS]
     
     func vkSdkShouldPresent(_ controller: UIViewController!) {
         print("vkSdkShouldPresent")
