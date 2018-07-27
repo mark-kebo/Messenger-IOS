@@ -20,8 +20,8 @@
 		C0771C2D20F3742000D2F34F /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0771C2C20F3742000D2F34F /* LoginController.swift */; };
 		C0771C3220F3742200D2F34F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0771C3120F3742200D2F34F /* Assets.xcassets */; };
 		C0771C3520F3742200D2F34F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0771C3320F3742200D2F34F /* LaunchScreen.storyboard */; };
-		C0F28EAE2109BFD100BD8043 /* DownloadSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F28EAD2109BFD100BD8043 /* DownloadSession.swift */; };
-		C0F28EB02109C9DA00BD8043 /* SessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F28EAF2109C9DA00BD8043 /* SessionProtocol.swift */; };
+		C0F28EAE2109BFD100BD8043 /* DownloaderImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F28EAD2109BFD100BD8043 /* DownloaderImage.swift */; };
+		C0F28EB02109C9DA00BD8043 /* DownloaderImageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F28EAF2109C9DA00BD8043 /* DownloaderImageProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,8 +41,8 @@
 		C0771C3120F3742200D2F34F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0771C3420F3742200D2F34F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C0771C3620F3742200D2F34F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C0F28EAD2109BFD100BD8043 /* DownloadSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadSession.swift; sourceTree = "<group>"; };
-		C0F28EAF2109C9DA00BD8043 /* SessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionProtocol.swift; sourceTree = "<group>"; };
+		C0F28EAD2109BFD100BD8043 /* DownloaderImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloaderImage.swift; sourceTree = "<group>"; };
+		C0F28EAF2109C9DA00BD8043 /* DownloaderImageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloaderImageProtocol.swift; sourceTree = "<group>"; };
 		D7EB95A24D4EECCE6892C680 /* Pods-Messenger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.release.xcconfig"; path = "Pods/Target Support Files/Pods-Messenger/Pods-Messenger.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -90,10 +90,10 @@
 				C0771C2A20F3742000D2F34F /* AppDelegate.swift */,
 				C0771C2C20F3742000D2F34F /* LoginController.swift */,
 				C058556F20FF5AC400000CEC /* ConnectedViewController.swift */,
-				C0F28EAD2109BFD100BD8043 /* DownloadSession.swift */,
-				C0F28EAF2109C9DA00BD8043 /* SessionProtocol.swift */,
-				C06D80272105FDE200B6E47E /* FriendsListProviderProtocol.swift */,
 				C06D80252105AEFE00B6E47E /* VKProvider.swift */,
+				C0F28EAD2109BFD100BD8043 /* DownloaderImage.swift */,
+				C0F28EAF2109C9DA00BD8043 /* DownloaderImageProtocol.swift */,
+				C06D80272105FDE200B6E47E /* FriendsListProviderProtocol.swift */,
 				C058558320FF704B00000CEC /* FriendsListController.swift */,
 				C058558420FF704B00000CEC /* FriendsList.xib */,
 				C058558720FF707E00000CEC /* SecondTab.swift */,
@@ -229,8 +229,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C058558520FF704B00000CEC /* FriendsListController.swift in Sources */,
-				C0F28EAE2109BFD100BD8043 /* DownloadSession.swift in Sources */,
-				C0F28EB02109C9DA00BD8043 /* SessionProtocol.swift in Sources */,
+				C0F28EAE2109BFD100BD8043 /* DownloaderImage.swift in Sources */,
+				C0F28EB02109C9DA00BD8043 /* DownloaderImageProtocol.swift in Sources */,
 				C058557020FF5AC400000CEC /* ConnectedViewController.swift in Sources */,
 				C058558920FF707E00000CEC /* SecondTab.swift in Sources */,
 				C0771C2D20F3742000D2F34F /* LoginController.swift in Sources */,

@@ -14,10 +14,8 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
     private let cellReuseIdentifier = "cell"
     private var provider: FriendsListProviderProtocol?
     private var bioFriends = [Person]()
-    private var session: SessionProtocol?
-    private var images = [UIImage]()
-//    private var images: Dictionary<NSURL, UIImage>?
-    
+    private var downloadImageProcess: DownloaderImageProtocol?
+    private let session = URLSession(configuration: URLSessionConfiguration.default)
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return bioFriends.count
@@ -27,37 +25,29 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         // создаем новую ячейку при необходимости или повторно используем старую
         let cell: UITableViewCell = (self.friendsList.dequeueReusableCell(withIdentifier: cellReuseIdentifier))!
         cell.textLabel?.text = "\(bioFriends[indexPath.row].name) \(bioFriends[indexPath.row].surname)"
-        cell.imageView?.image = images[indexPath.row]
+        downloadImageProcess?.downloadImage(session: session, imagePath: bioFriends[indexPath.row].avaImgUrl) { (image) in
+            if let updateCell = tableView.cellForRow(at: indexPath) {
+                updateCell.imageView?.image = image
+                //перезагрузка содержимого перед переиспользованием
+                updateCell.prepareForReuse()
+                print(indexPath.row)
+            }
+        }
         return cell
     }
     
     override func viewDidLoad() {
         provider = VKProvider()
-        session = DownloadSession()
+        downloadImageProcess = DownloaderImage()
         
         //захват self
         provider?.getFriendsList(treatmentFriends: { [weak self] (friends) in
             self?.bioFriends = friends
-            self?.startDownloadImage()
+            self?.friendsList.reloadData()
         })
         // Зарегистрируем класс ячейки представления таблицы и его идентификатор повторного использования
         friendsList.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         friendsList.delegate = self
         friendsList.dataSource = self
     }
-    
-    private func startDownloadImage() {
-        var urlFriendsImage = [URL]()
-        bioFriends.forEach() {
-            urlFriendsImage.append($0.avaImgUrl)
-        }
-        session?.downloadImage(url: urlFriendsImage, setImage: { [weak self] (imageFromUrl) in
-            self?.images.append(imageFromUrl)
-            DispatchQueue.main.async { () -> Void in
-                self?.friendsList.reloadData()
-            }
-        })
-    }
 }
-
-

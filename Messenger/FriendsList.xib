@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NZt-jC-R52">
-                    <rect key="frame" x="0.0" y="40" width="375" height="607"/>
+                    <rect key="frame" x="0.0" y="30" width="375" height="637"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
                         <outlet property="dataSource" destination="i5M-Pr-FkT" id="2cs-zW-znU"/>
@@ -33,8 +33,8 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="NZt-jC-R52" secondAttribute="trailing" id="EWv-ol-leF"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="NZt-jC-R52" secondAttribute="bottom" constant="20" id="HV4-AD-H9D"/>
-                <constraint firstItem="NZt-jC-R52" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="WG0-Xs-64d"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="NZt-jC-R52" secondAttribute="bottom" id="HV4-AD-H9D"/>
+                <constraint firstItem="NZt-jC-R52" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="10" id="WG0-Xs-64d"/>
                 <constraint firstItem="NZt-jC-R52" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="fVk-Pj-6SL"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

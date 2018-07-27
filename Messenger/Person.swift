@@ -11,5 +11,5 @@ import Foundation
 struct Person {
     var name: String
     var surname: String
-    var avaImgUrl: URL
+    var avaImgUrl: String
 }
