@@ -12,29 +12,34 @@ import UIKit
 class FileSystemImagesCache: CacheProtocol {
     
     func addImageToCache(key: NSString, object: UIImage) {
+        //внесение изменений в файловую систему, возвращение общего объекта ФМ, urls-возвращает массив адресов для общего каталога
         let documentsDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        //добавление к строке адреса к каталогу название файла
         let fileURL = documentsDirectory.appendingPathComponent("\(key).jpg")
-        print("----------------------->1 \(fileURL)")
+        //перевод в формат JPEG и проверка на существование файла по указанному адресу
         if let data = UIImageJPEGRepresentation(object, 1.0),
             !FileManager.default.fileExists(atPath: fileURL.path) {
             do {
+                //записывает данные по адресу
                 try data.write(to: fileURL)
             } catch {
-                print("error saving file:", error)
+                print(error)
             }
         }
     }
     
     func checkImageInCache(key: NSString) -> UIImage? {
-        let path = (self.getDirectoryPath() as NSString).appendingPathComponent("\(key).jpg")
-        
-        print("----------------------->2 \(path)")
+        //создаем новую строку с адресом добавляя в нее название файла
+        let path = self.getDirectoryPath().appendingPathComponent("\(key).jpg")
+        //возвращаем файл лежащий по адресу
         return UIImage(contentsOfFile: path)
     }
     
-    func getDirectoryPath() -> String {
+    func getDirectoryPath() -> NSString {
+        //Создает список путей для указанных каталогов в указанных доменах
         let paths = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)
+        //забираем первую строку и возвращаем ее
         let documentsDirectory = paths[0]
-        return documentsDirectory
+        return documentsDirectory as NSString
     }
 }
