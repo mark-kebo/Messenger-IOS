@@ -25,7 +25,7 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         // создаем новую ячейку при необходимости или повторно используем старую
         let cell: UITableViewCell = (self.friendsList.dequeueReusableCell(withIdentifier: cellReuseIdentifier))!
         cell.textLabel?.text = "\(bioFriends[indexPath.row].name) \(bioFriends[indexPath.row].surname)"
-        downloadImageProcess?.downloadImage(session: session, imagePath: bioFriends[indexPath.row].avaImgUrl) { (image) in
+        downloadImageProcess?.downloadImage(session: session, imagePath: bioFriends[indexPath.row].avaImgUrl, name: "\(bioFriends[indexPath.row].name)\(bioFriends[indexPath.row].surname)") { (image) in
             if let updateCell = tableView.cellForRow(at: indexPath) {
                 updateCell.imageView?.image = image
                 //перезагрузка содержимого перед переиспользованием

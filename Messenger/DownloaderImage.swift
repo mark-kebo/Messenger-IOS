@@ -18,47 +18,48 @@
 //  URLSessionDataTask-Задача сеанса URL, которая возвращает загруженные данные непосредственно в память.
 //  URLSessionUploadTask-Задача сеанса URL, которая загружает данные в сеть в тело запроса.
 //  URLSessionDownloadTask- сеанса URL, которая хранит загруженные данные в файле.
+//  cache -> массив объектов, но будет проблема с многопоточностью тк я к массиву обращаюсь с разных потоков/ Определить протокол и кэш сделать отдельным классом
 
 import UIKit
 
 public class DownloaderImage: DownloaderImageProtocol {
     //  NSCache-временное хранение переходных пар ключ-значение(временное хранение объектов с временными данными)
-    var cache: NSCache<NSString, UIImage>!
+//    var cache: NSCache<NSString, UIImage>!
+    var cache: CacheProtocol
+    let serialQueue: DispatchQueue
     
     init() {
-        self.cache = NSCache()
+//        self.cache = NSCache()
+//        cache = CacheImages()
+        cache = FileSystemImagesCache()
+        serialQueue = DispatchQueue(label: "queue")
     }
     
-    func downloadImage(session: URLSession, imagePath: String, completionHandler: @escaping ImageCacheLoaderCompletionHandler) {
+    func downloadImage(session: URLSession, imagePath: String, name: String, completionHandler: @escaping ImageCacheLoaderCompletionHandler) {
         //достал из кэша по ключу объект image что бы избежать повторного скачивание
-        if let image = self.cache.object(forKey: imagePath as NSString) {
-            DispatchQueue.main.async {
-                completionHandler(image)
-            }
-        } else {
-            let url: URL! = URL(string: imagePath)
-            session.dataTask(with: url, completionHandler: { (data, _, error) -> Void in
-                guard let data = data , error == nil, let img = UIImage(data: data) else { return }
-                //убираю объект image в кэш с ключом
-                self.cache.setObject(img, forKey: imagePath as NSString)
+        serialQueue.async {
+            if let image = self.cache.checkImageInCache(key: name as NSString) {
                 DispatchQueue.main.async {
-                    completionHandler(img)
+                    completionHandler(image)
                 }
-            }).resume()
+            } else {
+                let url: URL! = URL(string: imagePath)
+                session.dataTask(with: url, completionHandler: { [weak self] (data, _, error) -> Void in
+                    guard let data = data , error == nil, let img = UIImage(data: data) else { return }
+                    //убираю объект image в кэш с ключом
+                    self?.serialQueue.async {
+                        self?.cache.addImageToCache(key: name as NSString, object: img)
+                        DispatchQueue.main.async {
+                            completionHandler(img)
+                        }
+                    }
+                }).resume()
+            }
         }
     }
 }
 
-//func downloadImage(session: URLSession, imagePath: String, completionHandler: @escaping ImageCacheLoaderCompletionHandler) {
-//
-//    if let image = self.cache.object(forKey: imagePath as NSString) {
-//        DispatchQueue.main.async {
-//            completionHandler(image)
-//        }
-//    } else {
-//        let url: URL! = URL(string: imagePath)
-//        session.dataTask(with: url, completionHandler: { (location, response, error) in
-//              создает буфер данных по юрл-у (т/е/ берет данные по юрл и пишет их в экземпляр)
+//            создает буфер данных по юрл-у (т/е/ берет данные по юрл и пишет их в экземпляр) синхронно
 //            if let data = try? Data(contentsOf: url) {
 //                let img: UIImage! = UIImage(data: data)
 //                self.cache.setObject(img, forKey: imagePath as NSString)
@@ -66,6 +67,3 @@ public class DownloaderImage: DownloaderImageProtocol {
 //                    completionHandler(img)
 //                }
 //            }
-//        }).resume()
-//    }
-//}

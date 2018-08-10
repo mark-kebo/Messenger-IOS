@@ -10,5 +10,5 @@ import UIKit
 typealias ImageCacheLoaderCompletionHandler = ((UIImage) -> ())
 
 protocol DownloaderImageProtocol {
-    func downloadImage(session: URLSession, imagePath: String, completionHandler: @escaping ImageCacheLoaderCompletionHandler)
+    func downloadImage(session: URLSession, imagePath: String, name: String, completionHandler: @escaping ImageCacheLoaderCompletionHandler)
 }
