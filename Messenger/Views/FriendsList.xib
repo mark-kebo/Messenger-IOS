@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FirstTab" customModule="Messenger" customModuleProvider="target">
             <connections>
                 <outlet property="friendsList" destination="NZt-jC-R52" id="spd-yo-u2x"/>
+                <outlet property="searchFriends" destination="vL3-DO-OiC" id="TAO-MQ-Ayr"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -21,8 +22,15 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="vL3-DO-OiC">
+                    <rect key="frame" x="0.0" y="20" width="375" height="56"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="NZt-jC-R52" id="ZfM-i9-vmO"/>
+                    </connections>
+                </searchBar>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NZt-jC-R52">
-                    <rect key="frame" x="0.0" y="30" width="375" height="637"/>
+                    <rect key="frame" x="0.0" y="80" width="375" height="587"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
                         <outlet property="dataSource" destination="i5M-Pr-FkT" id="2cs-zW-znU"/>
@@ -34,8 +42,11 @@
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="NZt-jC-R52" secondAttribute="trailing" id="EWv-ol-leF"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="NZt-jC-R52" secondAttribute="bottom" id="HV4-AD-H9D"/>
-                <constraint firstItem="NZt-jC-R52" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="10" id="WG0-Xs-64d"/>
+                <constraint firstItem="vL3-DO-OiC" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="JIO-5r-FCj"/>
+                <constraint firstItem="NZt-jC-R52" firstAttribute="top" secondItem="vL3-DO-OiC" secondAttribute="bottom" constant="4" id="MqQ-vj-Gy9"/>
+                <constraint firstItem="vL3-DO-OiC" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="NdP-Id-Jya"/>
                 <constraint firstItem="NZt-jC-R52" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="fVk-Pj-6SL"/>
+                <constraint firstItem="vL3-DO-OiC" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="jF4-AP-t4Z"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="24.5" y="51.5"/>

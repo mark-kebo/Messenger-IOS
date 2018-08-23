@@ -1,0 +1,68 @@
+//
+//  FirstTab.swift
+//  Messenger
+//
+//  Created by Dmitry Vorozhbicky on 18.07.2018.
+//  Copyright © 2018 Dmitry Vorozhbicky. All rights reserved.
+//
+
+import UIKit
+
+class FriendsListController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+    @IBOutlet weak var friendsList: UITableView!
+    @IBOutlet weak var searchFriends: UISearchBar!
+    // идентификатор повторного использования ячеек (ячейки, которые прокручиваются вне поля зрения, могут быть повторно использованы)
+    private let cellReuseIdentifier = "cell"
+    private var provider: FriendsListProviderProtocol?
+    private var bioFriends = [Person]()
+    private var downloadImageProcess: DownloaderImageProtocol?
+    private let session = URLSession(configuration: URLSessionConfiguration.default)
+    private var filteredData = [Person]()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        provider = VKProvider()
+        downloadImageProcess = DownloaderImage()
+        
+        //захват self
+        provider?.getFriendsList(treatmentFriends: { [weak self] (friends) in
+            self?.bioFriends = friends
+            self?.filteredData = friends
+            self?.friendsList.reloadData()
+        })
+        // Зарегистрируем класс ячейки представления таблицы и его идентификатор повторного использования
+        friendsList.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+        friendsList.delegate = self
+        friendsList.dataSource = self
+        searchFriends.delegate = self
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return filteredData.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // создаем новую ячейку при необходимости или повторно используем старую
+        let cell: UITableViewCell = (self.friendsList.dequeueReusableCell(withIdentifier: cellReuseIdentifier))!
+        cell.textLabel?.text = "\(filteredData[indexPath.row].name) \(filteredData[indexPath.row].surname)"
+        downloadImageProcess?.downloadImage(session: session, imagePath: filteredData[indexPath.row].avaImgUrl,
+                                            name: "\(filteredData[indexPath.row].name)\(filteredData[indexPath.row].surname)") { (image) in
+            if let updateCell = tableView.cellForRow(at: indexPath) {
+                updateCell.imageView?.image = image
+                updateCell.imageView?.layer.masksToBounds = false
+                updateCell.imageView?.layer.cornerRadius = 13
+                updateCell.imageView?.clipsToBounds = true
+                //перезагрузка содержимого перед переиспользованием
+                updateCell.prepareForReuse()
+            }
+        }
+        return cell
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filteredData = searchText.isEmpty ? bioFriends : bioFriends.filter { (item: Person) -> Bool in
+            return "\(item.name) \(item.surname)".range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+        }
+        friendsList.reloadData()
+    }
+}

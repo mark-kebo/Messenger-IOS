@@ -9,19 +9,19 @@
 import UIKit
 
 class ConnectedViewController: UITabBarController {
-    var tabFriendsList : FriendsListController?
-    var tabViewControllerSecond : SecondTab?
+    var tabFriendsList: FriendsListController?
+    var tabMessagesList: MessagesController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabFriendsList = FriendsListController(nibName: "FriendsList", bundle: nil)
-        self.tabViewControllerSecond = SecondTab(nibName: "SecondTab", bundle: nil)
+        self.tabMessagesList = MessagesController(nibName: "MessagesList", bundle: nil)
         
-        self.viewControllers = [tabFriendsList!, tabViewControllerSecond!]
-        let itemFriendsList = UITabBarItem(title: "Friends list", image: nil, tag: 0)
-        let itemSecond = UITabBarItem(title: "2nd Tab", image: nil, tag: 1)
+        self.viewControllers = [tabFriendsList!, tabMessagesList!]
+        let itemFriendsList = UITabBarItem(title: "Friends", image: nil, tag: 0)
+        let itemSecond = UITabBarItem(title: "Messages", image: nil, tag: 1)
         
         tabFriendsList?.tabBarItem = itemFriendsList
-        tabViewControllerSecond?.tabBarItem = itemSecond
+        tabMessagesList?.tabBarItem = itemSecond
     }
 }

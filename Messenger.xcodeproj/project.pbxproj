@@ -12,8 +12,8 @@
 		C058557020FF5AC400000CEC /* ConnectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C058556F20FF5AC400000CEC /* ConnectedViewController.swift */; };
 		C058558520FF704B00000CEC /* FriendsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C058558320FF704B00000CEC /* FriendsListController.swift */; };
 		C058558620FF704B00000CEC /* FriendsList.xib in Resources */ = {isa = PBXBuildFile; fileRef = C058558420FF704B00000CEC /* FriendsList.xib */; };
-		C058558920FF707E00000CEC /* SecondTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = C058558720FF707E00000CEC /* SecondTab.swift */; };
-		C058558A20FF707E00000CEC /* SecondTab.xib in Resources */ = {isa = PBXBuildFile; fileRef = C058558820FF707E00000CEC /* SecondTab.xib */; };
+		C058558920FF707E00000CEC /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C058558720FF707E00000CEC /* MessagesController.swift */; };
+		C058558A20FF707E00000CEC /* MessagesList.xib in Resources */ = {isa = PBXBuildFile; fileRef = C058558820FF707E00000CEC /* MessagesList.xib */; };
 		C05C0EB821104B320087F0B1 /* CacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05C0EB721104B320087F0B1 /* CacheProtocol.swift */; };
 		C05C0EBA21104B5F0087F0B1 /* CacheImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05C0EB921104B5F0087F0B1 /* CacheImages.swift */; };
 		C06D80262105AEFE00B6E47E /* VKProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06D80252105AEFE00B6E47E /* VKProvider.swift */; };
@@ -34,8 +34,8 @@
 		C058556F20FF5AC400000CEC /* ConnectedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectedViewController.swift; sourceTree = "<group>"; };
 		C058558320FF704B00000CEC /* FriendsListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListController.swift; sourceTree = "<group>"; };
 		C058558420FF704B00000CEC /* FriendsList.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendsList.xib; sourceTree = "<group>"; };
-		C058558720FF707E00000CEC /* SecondTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondTab.swift; sourceTree = "<group>"; };
-		C058558820FF707E00000CEC /* SecondTab.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SecondTab.xib; sourceTree = "<group>"; };
+		C058558720FF707E00000CEC /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
+		C058558820FF707E00000CEC /* MessagesList.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessagesList.xib; sourceTree = "<group>"; };
 		C05C0EB721104B320087F0B1 /* CacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheProtocol.swift; sourceTree = "<group>"; };
 		C05C0EB921104B5F0087F0B1 /* CacheImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheImages.swift; sourceTree = "<group>"; };
 		C06D80252105AEFE00B6E47E /* VKProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKProvider.swift; sourceTree = "<group>"; };
@@ -72,6 +72,56 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C044908B212EE10100773DAC /* API */ = {
+			isa = PBXGroup;
+			children = (
+				C06D80252105AEFE00B6E47E /* VKProvider.swift */,
+				C06D80272105FDE200B6E47E /* FriendsListProviderProtocol.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		C044908C212EE1A000773DAC /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				C058558320FF704B00000CEC /* FriendsListController.swift */,
+				C0771C2C20F3742000D2F34F /* LoginController.swift */,
+				C058556F20FF5AC400000CEC /* ConnectedViewController.swift */,
+				C058558720FF707E00000CEC /* MessagesController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		C044908D212EE1B600773DAC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C058558420FF704B00000CEC /* FriendsList.xib */,
+				C058558820FF707E00000CEC /* MessagesList.xib */,
+				C0771C3320F3742200D2F34F /* LaunchScreen.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C044908E212EE22D00773DAC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C05C0EB721104B320087F0B1 /* CacheProtocol.swift */,
+				C05C0EB921104B5F0087F0B1 /* CacheImages.swift */,
+				C087376F211AB8FF003AF89C /* FileSystemImagesCache.swift */,
+				C0F28EAD2109BFD100BD8043 /* DownloaderImage.swift */,
+				C0F28EAF2109C9DA00BD8043 /* DownloaderImageProtocol.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C044908F212EE2BB00773DAC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C0501D4021076233008C2BA2 /* Person.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		C0771C1E20F3742000D2F34F = {
 			isa = PBXGroup;
 			children = (
@@ -93,22 +143,12 @@
 		C0771C2920F3742000D2F34F /* Messenger */ = {
 			isa = PBXGroup;
 			children = (
+				C044908F212EE2BB00773DAC /* Model */,
+				C044908E212EE22D00773DAC /* Services */,
+				C044908D212EE1B600773DAC /* Views */,
+				C044908C212EE1A000773DAC /* ViewControllers */,
+				C044908B212EE10100773DAC /* API */,
 				C0771C2A20F3742000D2F34F /* AppDelegate.swift */,
-				C0771C2C20F3742000D2F34F /* LoginController.swift */,
-				C058556F20FF5AC400000CEC /* ConnectedViewController.swift */,
-				C06D80252105AEFE00B6E47E /* VKProvider.swift */,
-				C05C0EB721104B320087F0B1 /* CacheProtocol.swift */,
-				C05C0EB921104B5F0087F0B1 /* CacheImages.swift */,
-				C087376F211AB8FF003AF89C /* FileSystemImagesCache.swift */,
-				C0F28EAD2109BFD100BD8043 /* DownloaderImage.swift */,
-				C0F28EAF2109C9DA00BD8043 /* DownloaderImageProtocol.swift */,
-				C06D80272105FDE200B6E47E /* FriendsListProviderProtocol.swift */,
-				C058558320FF704B00000CEC /* FriendsListController.swift */,
-				C058558420FF704B00000CEC /* FriendsList.xib */,
-				C058558720FF707E00000CEC /* SecondTab.swift */,
-				C058558820FF707E00000CEC /* SecondTab.xib */,
-				C0501D4021076233008C2BA2 /* Person.swift */,
-				C0771C3320F3742200D2F34F /* LaunchScreen.storyboard */,
 				C0771C3120F3742200D2F34F /* Assets.xcassets */,
 				C0771C3620F3742200D2F34F /* Info.plist */,
 			);
@@ -187,7 +227,7 @@
 				C058558620FF704B00000CEC /* FriendsList.xib in Resources */,
 				C0771C3520F3742200D2F34F /* LaunchScreen.storyboard in Resources */,
 				C0771C3220F3742200D2F34F /* Assets.xcassets in Resources */,
-				C058558A20FF707E00000CEC /* SecondTab.xib in Resources */,
+				C058558A20FF707E00000CEC /* MessagesList.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,7 +283,7 @@
 				C0873770211AB900003AF89C /* FileSystemImagesCache.swift in Sources */,
 				C0F28EB02109C9DA00BD8043 /* DownloaderImageProtocol.swift in Sources */,
 				C058557020FF5AC400000CEC /* ConnectedViewController.swift in Sources */,
-				C058558920FF707E00000CEC /* SecondTab.swift in Sources */,
+				C058558920FF707E00000CEC /* MessagesController.swift in Sources */,
 				C05C0EB821104B320087F0B1 /* CacheProtocol.swift in Sources */,
 				C0771C2D20F3742000D2F34F /* LoginController.swift in Sources */,
 				C0771C2B20F3742000D2F34F /* AppDelegate.swift in Sources */,
