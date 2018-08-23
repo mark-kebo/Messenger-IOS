@@ -68,7 +68,8 @@ class LoginController: UIViewController, VKSdkDelegate, VKSdkUIDelegate  {
     }
     
     private func goToNextController() {
-        let secondViewController: ConnectedViewController = ConnectedViewController()
-        self.present(secondViewController, animated: true, completion: nil)
+        let storyboard = UIStoryboard(name: "MainStoryboard", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "TabViewController")
+        self.present(controller, animated: true, completion: nil)
     }
 }

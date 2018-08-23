@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "55094AE937633A399F1AB44085E9673D"
-               BuildableName = "Pods_Messenger.framework"
-               BlueprintName = "Pods-Messenger"
+               BlueprintIdentifier = "345A113D5E2B7ECD2337CC0048EA1465"
+               BuildableName = "VKSdkResources.bundle"
+               BlueprintName = "VK-ios-sdk-VKSdkResources"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "55094AE937633A399F1AB44085E9673D"
-            BuildableName = "Pods_Messenger.framework"
-            BlueprintName = "Pods-Messenger"
+            BlueprintIdentifier = "345A113D5E2B7ECD2337CC0048EA1465"
+            BuildableName = "VKSdkResources.bundle"
+            BlueprintName = "VK-ios-sdk-VKSdkResources"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
