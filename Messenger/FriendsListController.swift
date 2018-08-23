@@ -28,6 +28,9 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         downloadImageProcess?.downloadImage(session: session, imagePath: bioFriends[indexPath.row].avaImgUrl, name: "\(bioFriends[indexPath.row].name)\(bioFriends[indexPath.row].surname)") { (image) in
             if let updateCell = tableView.cellForRow(at: indexPath) {
                 updateCell.imageView?.image = image
+                updateCell.imageView?.layer.masksToBounds = false
+                updateCell.imageView?.layer.cornerRadius = 13
+                updateCell.imageView?.clipsToBounds = true
                 //перезагрузка содержимого перед переиспользованием
                 updateCell.prepareForReuse()
                 print(indexPath.row)

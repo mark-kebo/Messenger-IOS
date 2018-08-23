@@ -5,6 +5,13 @@
 //  Created by Dmitry Vorozhbicky on 08.08.2018.
 //  Copyright © 2018 Dmitry Vorozhbicky. All rights reserved.
 //
+//  sandbox:
+//  documents - пользовательские данные, копируется в iT
+//  Documents/Inbox - открыт для внешних объектов, можно удалить и читать, но не создать или изменять файлы
+//  Library/ - для не пользовательских данных, содержит:
+//      - Application Support - хранение всех файлов данных приложения кроме связанных с документами пользователя
+//      - Caches - любые файлы легко воссоздаваемые, не копируется в iT
+//  tmp/ - временные файлы, не сохраняются между запусками приложения
 
 
 import UIKit
@@ -36,10 +43,8 @@ class FileSystemImagesCache: CacheProtocol {
     }
     
     func getDirectoryPath() -> NSString {
-        //Создает список путей для указанных каталогов в указанных доменах
-        let paths = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)
-        //забираем первую строку и возвращаем ее
-        let documentsDirectory = paths[0]
-        return documentsDirectory as NSString
+        //Создает список путей для указанных каталогов в указанных доменах и берет адрес первого элемента
+        let paths = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first!
+        return paths as NSString
     }
 }
