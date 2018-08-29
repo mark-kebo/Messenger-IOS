@@ -17,11 +17,16 @@ class VKProvider: FriendsListProviderProtocol {
             let json = response?.json as! Dictionary<String, Any>
             let items = json["items"] as! Array<Dictionary<String, Any>>
             items.forEach {
-                bioFriends.append(Person(name: $0["first_name"] as! String, surname: $0["last_name"] as! String, avaImgUrl: $0["photo_50"] as! String))
+                bioFriends.append(Person(name: $0["first_name"] as! String, surname: $0["last_name"] as! String,
+                                         avaImgUrl: $0["photo_50"] as! String, isOnline: $0["online"] as! Bool))
             }
             treatmentFriends(bioFriends)
         }, errorBlock: { (error) in
             print("ERROR: \(error as! String)")
         })
+    }
+    
+    public func getMessagesList(treatmentMessages: @escaping ([PreliminaryMessage]) -> Void) {
+        
     }
 }

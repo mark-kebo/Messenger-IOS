@@ -46,13 +46,20 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         let cell: UITableViewCell = (self.friendsList.dequeueReusableCell(withIdentifier: cellReuseIdentifier))!
         cell.textLabel?.text = "\(filteredData[indexPath.row].name) \(filteredData[indexPath.row].surname)"
         downloadImageProcess?.downloadImage(session: session, imagePath: filteredData[indexPath.row].avaImgUrl,
-                                            name: "\(filteredData[indexPath.row].name)\(filteredData[indexPath.row].surname)") { (image) in
+                                            name: "\(filteredData[indexPath.row].name)\(filteredData[indexPath.row].surname)") { [weak self] (image) in
             if let updateCell = tableView.cellForRow(at: indexPath) {
                 updateCell.imageView?.image = image
                 updateCell.imageView?.layer.masksToBounds = false
                 updateCell.imageView?.layer.cornerRadius = 13
                 updateCell.imageView?.clipsToBounds = true
-                //перезагрузка содержимого перед переиспользованием
+                if (self?.filteredData[indexPath.row].isOnline)! {
+                    updateCell.imageView?.layer.borderWidth = 4
+                    updateCell.imageView?.layer.borderColor = UIColor(red: 60.0/255.0, green: 140.0/255.0, blue: 35.0/255.0, alpha: 0.6).cgColor
+                    cell.textLabel?.textColor = UIColor(red: 60.0/255.0, green: 140.0/255.0, blue: 35.0/255.0, alpha: 0.9)
+                } else {
+                    updateCell.imageView?.layer.borderWidth = 0
+                    cell.textLabel?.textColor = UIColor.black
+                }
                 updateCell.prepareForReuse()
             }
         }

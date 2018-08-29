@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		908D1D402DB538A5D6BA7C3F /* Pods_Messenger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 973072C7504ED0A623F364B8 /* Pods_Messenger.framework */; };
 		B76247AB212F340600E8AD36 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B76247AA212F340600E8AD36 /* MainStoryboard.storyboard */; };
+		C0449091212FDCC900773DAC /* PreliminaryMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0449090212FDCC900773DAC /* PreliminaryMessage.swift */; };
 		C0501D4121076233008C2BA2 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0501D4021076233008C2BA2 /* Person.swift */; };
 		C058558520FF704B00000CEC /* FriendsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C058558320FF704B00000CEC /* FriendsListController.swift */; };
 		C058558920FF707E00000CEC /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C058558720FF707E00000CEC /* MessagesController.swift */; };
@@ -29,6 +30,7 @@
 		2D73759B46F7A542402969E1 /* Pods-Messenger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Messenger/Pods-Messenger.debug.xcconfig"; sourceTree = "<group>"; };
 		973072C7504ED0A623F364B8 /* Pods_Messenger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Messenger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76247AA212F340600E8AD36 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
+		C0449090212FDCC900773DAC /* PreliminaryMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreliminaryMessage.swift; sourceTree = "<group>"; };
 		C0501D4021076233008C2BA2 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		C058558320FF704B00000CEC /* FriendsListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListController.swift; sourceTree = "<group>"; };
 		C058558720FF707E00000CEC /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				C0501D4021076233008C2BA2 /* Person.swift */,
+				C0449090212FDCC900773DAC /* PreliminaryMessage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				C0771C2B20F3742000D2F34F /* AppDelegate.swift in Sources */,
 				C06D80262105AEFE00B6E47E /* VKProvider.swift in Sources */,
 				C0501D4121076233008C2BA2 /* Person.swift in Sources */,
+				C0449091212FDCC900773DAC /* PreliminaryMessage.swift in Sources */,
 				C06D80282105FDE200B6E47E /* FriendsListProviderProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

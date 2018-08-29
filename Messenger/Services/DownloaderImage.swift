@@ -30,15 +30,15 @@ public class DownloaderImage: DownloaderImageProtocol {
     
     init() {
 //        self.cache = NSCache()
-//        cache = CacheImages()
-        cache = FileSystemImagesCache()
+        cache = CacheImages()
+//        cache = FileSystemImagesCache()
         serialQueue = DispatchQueue(label: "queue")
     }
     
     func downloadImage(session: URLSession, imagePath: String, name: String, completionHandler: @escaping ImageCacheLoaderCompletionHandler) {
         //достал из кэша по ключу объект image что бы избежать повторного скачивание
         serialQueue.async {
-            if let image = self.cache.checkImageInCache(key: name as NSString) {
+            if let image = self.cache.checkImageInCache(key: imagePath as NSString) {
                 DispatchQueue.main.async {
                     completionHandler(image)
                 }

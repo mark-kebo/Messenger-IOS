@@ -17,7 +17,18 @@
                     <view key="view" contentMode="scaleToFill" id="Rao-v1-dUt">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search..." translatesAutoresizingMaskIntoConstraints="NO" id="VR9-eM-JBc">
+                                <rect key="frame" x="0.0" y="20" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="VR9-eM-JBc" firstAttribute="trailing" secondItem="Rc1-kC-mFt" secondAttribute="trailing" id="Haw-GA-DBg"/>
+                            <constraint firstItem="VR9-eM-JBc" firstAttribute="top" secondItem="Rc1-kC-mFt" secondAttribute="top" id="IMl-pS-2fX"/>
+                            <constraint firstItem="VR9-eM-JBc" firstAttribute="leading" secondItem="Rc1-kC-mFt" secondAttribute="leading" id="zzf-3x-hDm"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Rc1-kC-mFt"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Message" image="paper-plane" id="Did-ys-o20"/>
@@ -62,7 +73,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="IBl-aF-B11"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Friends" image="user" largeContentSizeImage="user" id="gDK-hc-kWJ"/>
+                    <tabBarItem key="tabBarItem" title="Friends" image="user" largeContentSizeImage="user" id="gDK-hc-kWJ">
+                        <color key="badgeColor" red="0.076975864367680849" green="0.53281646573604058" blue="0.13567356898362856" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </tabBarItem>
                     <connections>
                         <outlet property="friendsList" destination="F6G-a3-54e" id="Vjk-wI-lmB"/>
                         <outlet property="searchFriends" destination="ASD-g1-vhz" id="s0U-P6-ewH"/>
