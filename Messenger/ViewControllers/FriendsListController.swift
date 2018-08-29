@@ -18,23 +18,27 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
     private var downloadImageProcess: DownloaderImageProtocol?
     private let session = URLSession(configuration: URLSessionConfiguration.default)
     private var filteredData = [Person]()
+    private var refreshControl:UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         provider = VKProvider()
         downloadImageProcess = DownloaderImage()
         
-        //захват self
-        provider?.getFriendsList(treatmentFriends: { [weak self] (friends) in
-            self?.bioFriends = friends
-            self?.filteredData = friends
-            self?.friendsList.reloadData()
-        })
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: UIControlEvents.valueChanged)
+        friendsList.addSubview(refreshControl)
+        
         // Зарегистрируем класс ячейки представления таблицы и его идентификатор повторного использования
         friendsList.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         friendsList.delegate = self
         friendsList.dataSource = self
         searchFriends.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.registerData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -64,6 +68,20 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
         return cell
+    }
+    
+    func registerData() {
+        //захват self
+        provider?.getFriendsList(treatmentFriends: { [weak self] (friends) in
+            self?.bioFriends = friends
+            self?.filteredData = friends
+            self?.friendsList.reloadData()
+        })
+    }
+    
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        self.registerData()
+        refreshControl.endRefreshing()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
