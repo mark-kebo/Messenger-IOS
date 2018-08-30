@@ -9,7 +9,6 @@
 import UIKit
 
 class CacheImages: CacheProtocol {
-    
     var dictionaryCache = [NSString: UIImage]()
     
     func addImageToCache(key: NSString, object: UIImage) {

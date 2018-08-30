@@ -9,9 +9,8 @@
 import UIKit
 
 class FriendsListController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
-    @IBOutlet weak var friendsList: UITableView!
-    @IBOutlet weak var searchFriends: UISearchBar!
-    // идентификатор повторного использования ячеек (ячейки, которые прокручиваются вне поля зрения, могут быть повторно использованы)
+    @IBOutlet weak private var friendsList: UITableView!
+    @IBOutlet weak private var searchFriends: UISearchBar!
     private let cellReuseIdentifier = "cell"
     private var provider: FriendsListProviderProtocol?
     private var bioFriends = [Person]()
@@ -29,8 +28,6 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: UIControlEvents.valueChanged)
         friendsList.addSubview(refreshControl)
         
-        // Зарегистрируем класс ячейки представления таблицы и его идентификатор повторного использования
-        friendsList.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         friendsList.delegate = self
         friendsList.dataSource = self
         searchFriends.delegate = self
@@ -41,36 +38,32 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         self.registerData()
     }
     
+    // number of rows in table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredData.count
     }
     
+    // create a cell for each table view row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // создаем новую ячейку при необходимости или повторно используем старую
-        let cell: UITableViewCell = (self.friendsList.dequeueReusableCell(withIdentifier: cellReuseIdentifier))!
-        cell.textLabel?.text = "\(filteredData[indexPath.row].name) \(filteredData[indexPath.row].surname)"
-        downloadImageProcess?.downloadImage(session: session, imagePath: filteredData[indexPath.row].avaImgUrl,
-                                            name: "\(filteredData[indexPath.row].name)\(filteredData[indexPath.row].surname)") { [weak self] (image) in
-            if let updateCell = tableView.cellForRow(at: indexPath) {
-                updateCell.imageView?.image = image
-                updateCell.imageView?.layer.masksToBounds = false
-                updateCell.imageView?.layer.cornerRadius = 13
-                updateCell.imageView?.clipsToBounds = true
-                if (self?.filteredData[indexPath.row].isOnline)! {
-                    updateCell.imageView?.layer.borderWidth = 4
-                    updateCell.imageView?.layer.borderColor = UIColor(red: 60.0/255.0, green: 140.0/255.0, blue: 35.0/255.0, alpha: 0.6).cgColor
-                    cell.textLabel?.textColor = UIColor(red: 60.0/255.0, green: 140.0/255.0, blue: 35.0/255.0, alpha: 0.9)
-                } else {
-                    updateCell.imageView?.layer.borderWidth = 0
-                    cell.textLabel?.textColor = UIColor.black
-                }
-                updateCell.prepareForReuse()
-            }
+        let raw = filteredData[indexPath.row]
+        let cell:HeadlineTableViewCell = self.friendsList.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! HeadlineTableViewCell
+        cell.setName(name: "\(raw.name) \(raw.surname)")
+        downloadImageProcess?.downloadImage(session: session, imagePath: raw.avaImgUrl,
+                                            name: "\(raw.name)\(raw.surname)") { [weak self] (image) in
+                                                cell.setAvatar(image: image)
+                                                cell.setActivity(isOnline: (self?.filteredData[indexPath.row].isOnline)!)
+                                                cell.prepareForReuse()
         }
         return cell
     }
     
-    func registerData() {
+    // method to run when table view cell is tapped
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("You tapped cell number \(indexPath.row).")
+    }
+    
+    private func registerData() {
         //захват self
         provider?.getFriendsList(treatmentFriends: { [weak self] (friends) in
             self?.bioFriends = friends
@@ -79,7 +72,7 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         })
     }
     
-    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+    @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
         self.registerData()
         refreshControl.endRefreshing()
     }

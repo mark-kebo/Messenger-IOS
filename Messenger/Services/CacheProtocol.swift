@@ -9,9 +9,6 @@
 import UIKit
 
 protocol CacheProtocol {
-    
     func addImageToCache (key: NSString, object: UIImage)
-    
     func checkImageInCache(key: NSString) -> UIImage?
-    
 }
