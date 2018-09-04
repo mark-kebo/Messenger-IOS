@@ -9,7 +9,13 @@
 import UIKit
 
 class MessagesController: UIViewController {
+    private var provider: MessagesProviderProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        provider = VKProvider()
+        provider?.getMessagesList(treatmentMessages: { [weak self] (messages) in
+            print(messages);
+        })
     }
 }
