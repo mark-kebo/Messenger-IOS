@@ -11,5 +11,6 @@ import Foundation
 struct PreliminaryMessage {
     var person: Person
     var lastMessage: String
-    var lastDateMessage: Date
+    var lastDateMessage: NSNumber
+    var id: NSNumber?
 }

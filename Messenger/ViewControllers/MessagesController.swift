@@ -15,7 +15,12 @@ class MessagesController: UIViewController {
         super.viewDidLoad()
         provider = VKProvider()
         provider?.getMessagesList(treatmentMessages: { [weak self] (messages) in
-            print(messages);
+            var i = 1
+            messages.forEach {
+                print($0)
+                print("---\(i)----------------")
+                i = i + 1
+            }
         })
     }
 }
