@@ -48,9 +48,9 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         // создаем новую ячейку при необходимости или повторно используем старую
         let raw = filteredData[indexPath.row]
         let cell:HeadlineTableViewCell = self.friendsList.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! HeadlineTableViewCell
-        cell.setName(name: "\(raw.name) \(raw.surname)")
-        downloadImageProcess?.downloadImage(session: session, imagePath: raw.avaImgUrl,
-                                            name: "\(raw.name)\(raw.surname)") { [weak self] (image) in
+        cell.setName(name: "\(raw.name!) \(raw.surname!)")
+        downloadImageProcess?.downloadImage(session: session, imagePath: raw.avaImgUrl!,
+                                            name: "\(raw.name!)\(raw.surname!)") { [weak self] (image) in
                                                 cell.setAvatar(image: image)
                                                 cell.setActivity(isOnline: (self?.filteredData[indexPath.row].isOnline)!)
                                                 cell.prepareForReuse()

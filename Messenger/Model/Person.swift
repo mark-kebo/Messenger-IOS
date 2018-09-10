@@ -9,8 +9,9 @@
 import Foundation
 
 struct Person {
-    var name: String
-    var surname: String
-    var avaImgUrl: String
-    var isOnline: Bool
+    var id: NSNumber?
+    var name: String?
+    var surname: String?
+    var avaImgUrl: String?
+    var isOnline: Bool?
 }
