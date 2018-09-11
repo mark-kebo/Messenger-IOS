@@ -11,7 +11,7 @@ import UIKit
 class FriendsListController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     @IBOutlet weak private var friendsList: UITableView!
     @IBOutlet weak private var searchFriends: UISearchBar!
-    private let cellReuseIdentifier = "cell"
+    private let cellReuseIdentifier = "friendsCell"
     private var provider: FriendsListProviderProtocol?
     private var bioFriends = [Person]()
     private var downloadImageProcess: DownloaderImageProtocol?
@@ -47,7 +47,7 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // создаем новую ячейку при необходимости или повторно используем старую
         let raw = filteredData[indexPath.row]
-        let cell:HeadlineTableViewCell = self.friendsList.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! HeadlineTableViewCell
+        let cell:FriendsListTableViewCell = self.friendsList.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! FriendsListTableViewCell
         cell.setName(name: "\(raw.name!) \(raw.surname!)")
         downloadImageProcess?.downloadImage(session: session, imagePath: raw.avaImgUrl!,
                                             name: "\(raw.name!)\(raw.surname!)") { [weak self] (image) in
@@ -79,7 +79,7 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filteredData = searchText.isEmpty ? bioFriends : bioFriends.filter { (item: Person) -> Bool in
-            return "\(item.name) \(item.surname)".range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+            return "\(item.name!) \(item.surname!)".range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
         }
         friendsList.reloadData()
     }

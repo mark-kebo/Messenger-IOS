@@ -1,5 +1,5 @@
 //
-//  HeadlineTableViewCell.swift
+//  FriendsListTableViewCell.swift
 //  Messenger
 //
 //  Created by Dmitry Vorozhbicky on 8/30/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HeadlineTableViewCell: UITableViewCell {
+class FriendsListTableViewCell: UITableViewCell {
     @IBOutlet weak private var avatar: UIImageView!
     @IBOutlet weak private var name: UILabel!
     @IBOutlet weak private var activity: UILabel!
