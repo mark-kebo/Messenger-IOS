@@ -13,4 +13,5 @@ struct PreliminaryMessage {
     var lastMessage: String
     var lastDateMessage: NSNumber
     var id: NSNumber?
+    var unreadCount: NSNumber?
 }

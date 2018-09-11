@@ -43,47 +43,80 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol {
                                                                               avaImgUrl: $0["photo_50"] as? String,
                                                                               isOnline: $0["online"] as? Bool),
                                                                objects: items)) {
-                    conversations.append(gettingMessage)
+                    conversations = conversations + gettingMessage
                 }
             }
-            treatmentMessages(conversations)
+            //sort
+            let sortedConversations = conversations.sorted {$0.lastDateMessage.compare($1.lastDateMessage) == .orderedDescending}
+            treatmentMessages(sortedConversations)
         }, errorBlock: { (error) in
             print("Error: \(String(describing: error))")
         })
     }
     
-    private func getPreliminaryMessages(person: Person, objects: Array<Dictionary<String, Any>>) -> PreliminaryMessage? {
+    private func getPreliminaryMessages(person: Person, objects: Array<Dictionary<String, Any>>) -> [PreliminaryMessage]? {
+        var messages = [PreliminaryMessage]()
         for object in objects {
             let lastMessage = object["last_message"] as! Dictionary<String, Any>
             let conversation = object["conversation"] as! Dictionary<String, Any>
-            if let conversationIds = conversation["chat_settings"] as? Dictionary<String, Any> {
-                let activeIds = conversationIds["active_ids"] as! Array<NSNumber>
-                var photoUrl: String?
-                if let photo = conversationIds["photo"] as? Dictionary<String, Any> {
-                    photoUrl = photo["photo_50"] as? String
-                } else {
-                    photoUrl = person.avaImgUrl
-                }
-                //nid fix this. dont work with id
-                if person.id == activeIds.first {
-                    return PreliminaryMessage(person: Person(id: activeIds.first!,
-                                                            name: conversationIds["title"] as? String,
-                                                            surname: nil,
-                                                            avaImgUrl: photoUrl,
-                                                            isOnline: nil),
-                                              lastMessage: lastMessage["text"] as! String,
-                                              lastDateMessage: lastMessage["date"] as! NSNumber,
-                                              id: nil)
+            let peer = conversation["peer"] as! Dictionary<String, Any>
+            let count = conversation["unread_count"] as? NSNumber
+            var textLastMessage = lastMessage["text"] as! String
+            if textLastMessage == "" {
+                if let attachments = lastMessage["attachments"] as? Array<Dictionary<String, Any>> {
+                    attachments.forEach {
+                        switch $0["type"] as! String {
+                        case "photo": textLastMessage = "Photo"
+                        case "video": textLastMessage = "Video"
+                        case "audio": textLastMessage = "Audio"
+                        case "doc": textLastMessage = "Document"
+                        case "link": textLastMessage = "Link"
+                        case "market": textLastMessage = "Market"
+                        case "market_album": textLastMessage = "Market album"
+                        case "wall": textLastMessage = "Wall post"
+                        case "wall_reply": textLastMessage = "Wall reply"
+                        case "sticker": textLastMessage = "Sticker"
+                        case "gift": textLastMessage = "Gift"
+                        default:
+                            break
+                        }
+                        return
+                    }
                 }
             }
-            if person.id == (lastMessage["peer_id"] as! NSNumber) {
-                return PreliminaryMessage(person: person,
-                                          lastMessage: lastMessage["text"] as! String,
-                                          lastDateMessage: lastMessage["date"] as! NSNumber,
-                                          id: nil)
+            if peer["type"] as? String == "user" {
+                if person.id == (lastMessage["peer_id"] as! NSNumber) {
+                    messages.append(PreliminaryMessage(person: person,
+                                              lastMessage: textLastMessage,
+                                              lastDateMessage: lastMessage["date"] as! NSNumber,
+                                              id: nil,
+                                              unreadCount: count != nil ? count : 0))
+                }
+            } else {
+                if let conversationIds = conversation["chat_settings"] as? Dictionary<String, Any> {
+                    let activeIds = conversationIds["active_ids"] as! Array<NSNumber>
+                    var photoUrl: String?
+                    if let photo = conversationIds["photo"] as? Dictionary<String, Any> {
+                        photoUrl = photo["photo_50"] as? String
+                    } else {
+                        photoUrl = "https://vk.com/images/community_50.png?ava=1"
+                    }
+                    //nid fix this. dont work with id???
+                    if person.id == activeIds.first {
+                        messages.append(PreliminaryMessage(person: Person(id: activeIds.first!,
+                                                                 name: conversationIds["title"] as? String,
+                                                                 surname: "",
+                                                                 avaImgUrl: photoUrl,
+                                                                 isOnline: nil),
+                                                  lastMessage: textLastMessage,
+                                                  lastDateMessage: lastMessage["date"] as! NSNumber,
+                                                  id: nil,
+                                                  unreadCount: count != nil ? count : 0))
+                    }
+                }
             }
         }
-        return nil
+        return messages
     }
     
 }

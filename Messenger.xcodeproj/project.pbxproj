@@ -18,7 +18,8 @@
 		C065EE16213EACD7000C82EA /* MessagesProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C065EE15213EACD7000C82EA /* MessagesProviderProtocol.swift */; };
 		C06D80262105AEFE00B6E47E /* VKProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06D80252105AEFE00B6E47E /* VKProvider.swift */; };
 		C06D80282105FDE200B6E47E /* FriendsListProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06D80272105FDE200B6E47E /* FriendsListProviderProtocol.swift */; };
-		C071F3E32137C6CE00864315 /* HeadlineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C071F3E22137C6CE00864315 /* HeadlineTableViewCell.swift */; };
+		C071F3E32137C6CE00864315 /* FriendsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C071F3E22137C6CE00864315 /* FriendsListTableViewCell.swift */; };
+		C073FFFF2147AB110054C83E /* MessagesListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C073FFFE2147AB110054C83E /* MessagesListTableViewCell.swift */; };
 		C0771C2B20F3742000D2F34F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0771C2A20F3742000D2F34F /* AppDelegate.swift */; };
 		C0771C2D20F3742000D2F34F /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0771C2C20F3742000D2F34F /* LoginController.swift */; };
 		C0771C3220F3742200D2F34F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0771C3120F3742200D2F34F /* Assets.xcassets */; };
@@ -41,7 +42,8 @@
 		C065EE15213EACD7000C82EA /* MessagesProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesProviderProtocol.swift; sourceTree = "<group>"; };
 		C06D80252105AEFE00B6E47E /* VKProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKProvider.swift; sourceTree = "<group>"; };
 		C06D80272105FDE200B6E47E /* FriendsListProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListProviderProtocol.swift; sourceTree = "<group>"; };
-		C071F3E22137C6CE00864315 /* HeadlineTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadlineTableViewCell.swift; sourceTree = "<group>"; };
+		C071F3E22137C6CE00864315 /* FriendsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListTableViewCell.swift; sourceTree = "<group>"; };
+		C073FFFE2147AB110054C83E /* MessagesListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesListTableViewCell.swift; sourceTree = "<group>"; };
 		C0771C2720F3742000D2F34F /* Messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Messenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0771C2A20F3742000D2F34F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0771C2C20F3742000D2F34F /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; tabWidth = 4; };
@@ -99,7 +101,8 @@
 			children = (
 				C0771C3320F3742200D2F34F /* LaunchScreen.storyboard */,
 				B76247AA212F340600E8AD36 /* MainStoryboard.storyboard */,
-				C071F3E22137C6CE00864315 /* HeadlineTableViewCell.swift */,
+				C071F3E22137C6CE00864315 /* FriendsListTableViewCell.swift */,
+				C073FFFE2147AB110054C83E /* MessagesListTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -280,7 +283,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C058558520FF704B00000CEC /* FriendsListController.swift in Sources */,
-				C071F3E32137C6CE00864315 /* HeadlineTableViewCell.swift in Sources */,
+				C073FFFF2147AB110054C83E /* MessagesListTableViewCell.swift in Sources */,
+				C071F3E32137C6CE00864315 /* FriendsListTableViewCell.swift in Sources */,
 				C0F28EAE2109BFD100BD8043 /* DownloaderImage.swift in Sources */,
 				C05C0EBA21104B5F0087F0B1 /* CacheImages.swift in Sources */,
 				C0873770211AB900003AF89C /* FileSystemImagesCache.swift in Sources */,
