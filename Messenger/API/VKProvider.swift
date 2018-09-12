@@ -28,6 +28,14 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol {
             print("ERROR: \(error as! String)")
         })
     }
+
+    public func deleteFriend(byId: NSNumber) {
+        VKRequest(method: "friends.delete", parameters: ["user_id":byId.stringValue]).execute(resultBlock: { (response) in
+            print("Friend \(byId.stringValue) was deleted")
+        }, errorBlock: { (error) in
+            print("ERROR: \(error as! String)")
+        })
+    }
     
     public func getMessagesList(treatmentMessages: @escaping ([PreliminaryMessage]) -> Void) {
         // get list prev messages
@@ -61,35 +69,13 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol {
             let conversation = object["conversation"] as! Dictionary<String, Any>
             let peer = conversation["peer"] as! Dictionary<String, Any>
             let count = conversation["unread_count"] as? NSNumber
-            var textLastMessage = lastMessage["text"] as! String
-            if textLastMessage == "" {
-                if let attachments = lastMessage["attachments"] as? Array<Dictionary<String, Any>> {
-                    attachments.forEach {
-                        switch $0["type"] as! String {
-                        case "photo": textLastMessage = "Photo"
-                        case "video": textLastMessage = "Video"
-                        case "audio": textLastMessage = "Audio"
-                        case "doc": textLastMessage = "Document"
-                        case "link": textLastMessage = "Link"
-                        case "market": textLastMessage = "Market"
-                        case "market_album": textLastMessage = "Market album"
-                        case "wall": textLastMessage = "Wall post"
-                        case "wall_reply": textLastMessage = "Wall reply"
-                        case "sticker": textLastMessage = "Sticker"
-                        case "gift": textLastMessage = "Gift"
-                        default:
-                            break
-                        }
-                        return
-                    }
-                }
-            }
+            let textLastMessage = setTextLastMessages(byLastMessages: lastMessage)
             if peer["type"] as? String == "user" {
                 if person.id == (lastMessage["peer_id"] as! NSNumber) {
                     messages.append(PreliminaryMessage(person: person,
                                               lastMessage: textLastMessage,
                                               lastDateMessage: lastMessage["date"] as! NSNumber,
-                                              id: nil,
+                                              id: peer["id"] as? NSNumber,
                                               unreadCount: count != nil ? count : 0))
                 }
             } else {
@@ -110,13 +96,48 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol {
                                                                  isOnline: nil),
                                                   lastMessage: textLastMessage,
                                                   lastDateMessage: lastMessage["date"] as! NSNumber,
-                                                  id: nil,
+                                                  id: peer["id"] as? NSNumber,
                                                   unreadCount: count != nil ? count : 0))
                     }
                 }
             }
         }
         return messages
+    }
+    
+    private func setTextLastMessages(byLastMessages: Dictionary<String, Any>) -> String {
+        var textLastMessage = byLastMessages["text"] as! String
+        if textLastMessage == "" {
+            if let attachments = byLastMessages["attachments"] as? Array<Dictionary<String, Any>> {
+                attachments.forEach {
+                    switch $0["type"] as! String {
+                    case "photo": textLastMessage = "Photo"
+                    case "video": textLastMessage = "Video"
+                    case "audio": textLastMessage = "Audio"
+                    case "doc": textLastMessage = "Document"
+                    case "link": textLastMessage = "Link"
+                    case "market": textLastMessage = "Market"
+                    case "market_album": textLastMessage = "Market album"
+                    case "wall": textLastMessage = "Wall post"
+                    case "wall_reply": textLastMessage = "Wall reply"
+                    case "sticker": textLastMessage = "Sticker"
+                    case "gift": textLastMessage = "Gift"
+                    default:
+                        break
+                    }
+                    return
+                }
+            }
+        }
+        return textLastMessage
+    }
+    
+    public func deleteChat(byId: NSNumber) {
+        VKRequest(method: "messages.deleteConversation", parameters: ["peer_id":byId.stringValue]).execute(resultBlock: { (response) in
+            print("Chat \(byId.stringValue) was deleted")
+        }, errorBlock: { (error) in
+            print("ERROR: \(error as! String)")
+        })
     }
     
 }

@@ -58,9 +58,22 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
-    // method to run when table view cell is tapped
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("You tapped cell number \(indexPath.row).")
+    //Swipe to delete and send messages
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .default, title: "Delete") { [weak self] (_, indexPath) in
+            let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+                self?.provider?.deleteFriend(byId: (self?.filteredData[indexPath.row].id)!)
+                self?.registerData()
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in }))
+            self?.present(alert, animated: true, completion: nil)
+        }
+        let messages = UITableViewRowAction(style: .normal, title: "Messages") { [weak self] (_, indexPath) in
+            //go to messages
+            self?.performSegue(withIdentifier: "showChatFromFriends", sender: nil)
+        }
+        return [delete, messages]
     }
     
     private func registerData() {

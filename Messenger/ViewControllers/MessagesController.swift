@@ -71,7 +71,22 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("You tapped cell number \(indexPath.row).")
+        //go to messages
+        self.performSegue(withIdentifier: "showChatFromMessagesList", sender: nil)
+    }
+    
+    //Swipe to delete and send messages
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .default, title: "Delete") { [weak self] (_, indexPath) in
+            let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+                self?.provider?.deleteChat(byId: (self?.filteredMessages[indexPath.row].id)!)
+                self?.registerData()
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in }))
+            self?.present(alert, animated: true, completion: nil)
+        }
+        return [delete]
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
