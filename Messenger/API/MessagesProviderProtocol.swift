@@ -10,4 +10,5 @@ import Foundation
 
 protocol MessagesProviderProtocol {
     func getMessagesList(treatmentMessages: @escaping ([PreliminaryMessage]) -> Void)
+    func deleteChat(byId: NSNumber)
 }
