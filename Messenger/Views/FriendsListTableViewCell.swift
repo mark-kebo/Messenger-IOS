@@ -25,13 +25,12 @@ class FriendsListTableViewCell: UITableViewCell {
     }
     
     public func setActivity(isOnline: Bool) {
-        let colorGreen = UIColor(red: 60.0/255.0, green: 140.0/255.0, blue: 35.0/255.0, alpha: 0.9)
         if isOnline {
-            activity?.text = "Online"
-            activity?.textColor = colorGreen
+            activity.isHidden = false
+            activity.clipsToBounds = true
+            activity.layer.cornerRadius = activity.layer.frame.height / 2
         } else {
-            activity?.text = "Offline"
-            activity?.textColor = UIColor.lightGray
+            activity.isHidden = true
         }
     }
 }

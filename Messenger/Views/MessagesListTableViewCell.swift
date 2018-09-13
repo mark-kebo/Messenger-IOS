@@ -14,6 +14,8 @@ class MessagesListTableViewCell: UITableViewCell {
     @IBOutlet weak var lastMessage: UILabel!
     @IBOutlet weak var date: UILabel!
     @IBOutlet weak var countUnreadMessages: UILabel!
+    @IBOutlet weak var bubbleLastMessage: UIView!
+    private let colorBackground = UIColor(red:0.88, green:0.95, blue:0.98, alpha:1.0)
     
     public func setAvatar(image: UIImage) {
         avatar?.image = image
@@ -26,8 +28,12 @@ class MessagesListTableViewCell: UITableViewCell {
         self.name?.text = name
     }
     
-    public func setTextLastMessage(text: String) {
-        self.lastMessage?.text = text
+    public func setTextLastMessage(text: String, isRead: Bool) {
+        let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: text)
+        attributedString.setColor(color: UIColor(red:0.13, green:0.51, blue:1.00, alpha:1.0), forText: "You:")
+        lastMessage.attributedText = attributedString
+        bubbleLastMessage.layer.cornerRadius = bubbleLastMessage.layer.frame.height / 2
+        isRead ? (bubbleLastMessage.backgroundColor = nil) : (bubbleLastMessage.backgroundColor = colorBackground)
     }
     
     public func setDate(date: NSNumber) {
@@ -43,11 +49,20 @@ class MessagesListTableViewCell: UITableViewCell {
     public func setCountUnreadMessages(count: NSNumber) {
         if count != 0 {
             countUnreadMessages.isHidden = false
-            countUnreadMessages?.text = count.stringValue
-            self.backgroundColor = UIColor(red:0.88, green:0.95, blue:0.98, alpha:1.0)
+            countUnreadMessages.clipsToBounds = true
+            countUnreadMessages.text = count.stringValue
+            countUnreadMessages.layer.cornerRadius = countUnreadMessages.layer.frame.height / 2
+            self.backgroundColor = colorBackground
         } else {
             countUnreadMessages.isHidden = true
             self.backgroundColor = nil
         }
+    }
+}
+
+extension NSMutableAttributedString {
+    func setColor(color: UIColor, forText stringValue: String) {
+        let range: NSRange = self.mutableString.range(of: stringValue, options: .caseInsensitive)
+        self.addAttribute(NSAttributedStringKey.foregroundColor, value: color, range: range)
     }
 }

@@ -10,8 +10,13 @@ import UIKit
 
 class ChatViewController: UIViewController {
 
+    @IBOutlet weak var chatTableView: UITableView!
+    var chatId: String?
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        chatTableView.separatorStyle = .none
+        navigationItem.title = chatId
     }
 
 }
