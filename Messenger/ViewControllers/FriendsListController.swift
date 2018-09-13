@@ -17,7 +17,8 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
     private var downloadImageProcess: DownloaderImageProtocol?
     private let session = URLSession(configuration: URLSessionConfiguration.default)
     private var filteredData = [Person]()
-    private var refreshControl:UIRefreshControl!
+    private var refreshControl: UIRefreshControl!
+    private var currentId: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +28,8 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: UIControlEvents.valueChanged)
         friendsList.addSubview(refreshControl)
+        friendsList.allowsSelection = false;
+        friendsList.separatorStyle = .none
         
         friendsList.delegate = self
         friendsList.dataSource = self
@@ -71,9 +74,15 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         }
         let messages = UITableViewRowAction(style: .normal, title: "Messages") { [weak self] (_, indexPath) in
             //go to messages
+            self?.currentId = self?.filteredData[indexPath.row].id?.stringValue
             self?.performSegue(withIdentifier: "showChatFromFriends", sender: nil)
         }
         return [delete, messages]
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! ChatViewController
+        destinationVC.chatId = currentId!
     }
     
     private func registerData() {

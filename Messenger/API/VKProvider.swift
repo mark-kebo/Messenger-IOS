@@ -69,14 +69,22 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol {
             let conversation = object["conversation"] as! Dictionary<String, Any>
             let peer = conversation["peer"] as! Dictionary<String, Any>
             let count = conversation["unread_count"] as? NSNumber
-            let textLastMessage = setTextLastMessages(byLastMessages: lastMessage)
+            let textLastMessage: String
+            let isSentRead: Bool
+            conversation["in_read"] as! NSNumber != conversation["out_read"] as! NSNumber ? (isSentRead = false) : (isSentRead = true)
+            if let out = lastMessage["out"] as? Bool {
+                out ? (textLastMessage = "You: \(setTextLastMessages(byLastMessages: lastMessage))") : (textLastMessage = setTextLastMessages(byLastMessages: lastMessage))
+            } else {
+                textLastMessage = setTextLastMessages(byLastMessages: lastMessage)
+            }
             if peer["type"] as? String == "user" {
                 if person.id == (lastMessage["peer_id"] as! NSNumber) {
                     messages.append(PreliminaryMessage(person: person,
                                               lastMessage: textLastMessage,
                                               lastDateMessage: lastMessage["date"] as! NSNumber,
                                               id: peer["id"] as? NSNumber,
-                                              unreadCount: count != nil ? count : 0))
+                                              unreadCount: count != nil ? count : 0,
+                                              isSentRead: isSentRead))
                 }
             } else {
                 if let conversationIds = conversation["chat_settings"] as? Dictionary<String, Any> {
@@ -87,7 +95,7 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol {
                     } else {
                         photoUrl = "https://vk.com/images/community_50.png?ava=1"
                     }
-                    //nid fix this. dont work with id???
+                    //nid fix this. mb???
                     if person.id == activeIds.first {
                         messages.append(PreliminaryMessage(person: Person(id: activeIds.first!,
                                                                  name: conversationIds["title"] as? String,
@@ -97,7 +105,8 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol {
                                                   lastMessage: textLastMessage,
                                                   lastDateMessage: lastMessage["date"] as! NSNumber,
                                                   id: peer["id"] as? NSNumber,
-                                                  unreadCount: count != nil ? count : 0))
+                                                  unreadCount: count != nil ? count : 0,
+                                                  isSentRead: isSentRead))
                     }
                 }
             }

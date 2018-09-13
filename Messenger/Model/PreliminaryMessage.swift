@@ -14,4 +14,5 @@ struct PreliminaryMessage {
     var lastDateMessage: NSNumber
     var id: NSNumber?
     var unreadCount: NSNumber?
+    var isSentRead: Bool?
 }
