@@ -9,8 +9,9 @@
 import Foundation
 import VK_ios_sdk
 
-class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol {
+class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, PrivateChatProviderProtocol {
     
+    // MARK: FriendsList
     public func getFriendsList(treatmentFriends: @escaping ([Person]) -> Void) {
         var bioFriends = [Person]()
         VKRequest(method: "friends.get", parameters: ["fields":"photo_50", "order":"hints"]).execute(resultBlock: { (response) in
@@ -25,7 +26,7 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol {
             }
             treatmentFriends(bioFriends)
         }, errorBlock: { (error) in
-            print("ERROR: \(error as! String)")
+            print("ERROR: \(String(describing: error))")
         })
     }
 
@@ -33,10 +34,11 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol {
         VKRequest(method: "friends.delete", parameters: ["user_id":byId.stringValue]).execute(resultBlock: { (response) in
             print("Friend \(byId.stringValue) was deleted")
         }, errorBlock: { (error) in
-            print("ERROR: \(error as! String)")
+            print("ERROR: \(String(describing: error))")
         })
     }
     
+    //MARK: MessagesList
     public func getMessagesList(treatmentMessages: @escaping ([PreliminaryMessage]) -> Void) {
         // get list prev messages
         var conversations = [PreliminaryMessage]()
@@ -146,6 +148,23 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol {
             print("Chat \(byId.stringValue) was deleted")
         }, errorBlock: { (error) in
             print("ERROR: \(error as! String)")
+        })
+    }
+    
+    //MARK: Chat
+    func getChatMessagesList(byId: String, treatmentMessages: @escaping ([PrivateMessage]) -> Void) {
+        var messages = [PrivateMessage]()
+        VKRequest(method: "messages.getHistory", parameters: ["user_id":byId, "count":"100", "rew":"1"]).execute(resultBlock: { (response) in
+            let json = response?.json as! Dictionary<String, Any>
+            let items = json["items"] as! Array<Dictionary<String, Any>>
+            items.forEach {
+                messages.append(PrivateMessage(message: $0["body"] as! String,
+                                               date: $0["date"] as! NSNumber,
+                                               isMine: $0["out"] as! Bool) )
+            }
+            treatmentMessages(messages)
+        }, errorBlock: { (error) in
+            print("ERROR: \(String(describing: error))")
         })
     }
     
