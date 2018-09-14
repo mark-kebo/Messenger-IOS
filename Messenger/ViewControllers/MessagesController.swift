@@ -18,6 +18,7 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
     private var refreshControl:UIRefreshControl!
     private var downloadImageProcess: DownloaderImageProtocol?
     private var currentId: String?
+    private var currentName: String?
     private let session = URLSession(configuration: URLSessionConfiguration.default)
     
     override func viewDidLoad() {
@@ -76,6 +77,7 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //go to messages
         self.currentId = self.filteredMessages[indexPath.row].id?.stringValue
+        self.currentName = "\(self.filteredMessages[indexPath.row].person.name!) \(self.filteredMessages[indexPath.row].person.surname!)"
         self.performSegue(withIdentifier: "showChatFromMessagesList", sender: nil)
     }
     
@@ -96,6 +98,7 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! ChatViewController
         destinationVC.chatId = currentId!
+        destinationVC.chatName = currentName!
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
