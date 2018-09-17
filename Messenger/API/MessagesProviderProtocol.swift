@@ -11,4 +11,6 @@ import Foundation
 protocol MessagesProviderProtocol {
     func getMessagesList(treatmentMessages: @escaping ([PreliminaryMessage]) -> Void)
     func deleteChat(byId: NSNumber)
+    func getLongPollServer(callBack: @escaping () -> Void)
+    func registrationLongPoll(callBack: @escaping () -> Void)
 }

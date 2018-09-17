@@ -27,7 +27,7 @@
                                 <rect key="frame" x="0.0" y="56" width="414" height="567"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="messagesCell" rowHeight="60" id="TMD-lF-3eK" customClass="MessagesListTableViewCell" customModule="Messenger" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="messagesCell" rowHeight="60" id="TMD-lF-3eK" customClass="MessagesListTableViewCell" customModule="Messenger" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TMD-lF-3eK" id="uqf-Xp-hlC">
@@ -230,26 +230,27 @@
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="60" id="UFF-6U-1VF"/>
                                                         </constraints>
+                                                        <color key="tintColor" red="0.1333333333" green="0.50980392159999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" title="Send"/>
                                                         <connections>
                                                             <action selector="sendMessage:" destination="X1M-hl-alR" eventType="touchUpInside" id="O4l-0i-VFm"/>
                                                         </connections>
                                                     </button>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6SF-Lg-5Ey">
-                                                        <rect key="frame" x="8" y="8" width="337" height="34"/>
+                                                        <rect key="frame" x="8" y="8" width="345" height="34"/>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
                                                 </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstItem="6Wi-Qq-LMc" firstAttribute="top" secondItem="Mjt-Kk-maZ" secondAttribute="top" id="5gr-M4-ZsE"/>
                                                     <constraint firstItem="6SF-Lg-5Ey" firstAttribute="top" secondItem="Mjt-Kk-maZ" secondAttribute="top" constant="8" id="OBx-Fe-y4K"/>
                                                     <constraint firstAttribute="height" constant="50" id="Tl1-tl-HnH"/>
                                                     <constraint firstAttribute="bottom" secondItem="6Wi-Qq-LMc" secondAttribute="bottom" id="ZrG-DL-TyC"/>
                                                     <constraint firstItem="6SF-Lg-5Ey" firstAttribute="leading" secondItem="Mjt-Kk-maZ" secondAttribute="leading" constant="8" id="aSq-QA-Fqh"/>
-                                                    <constraint firstItem="6Wi-Qq-LMc" firstAttribute="leading" secondItem="6SF-Lg-5Ey" secondAttribute="trailing" constant="8" id="l20-vj-yAa"/>
+                                                    <constraint firstItem="6Wi-Qq-LMc" firstAttribute="leading" secondItem="6SF-Lg-5Ey" secondAttribute="trailing" id="l20-vj-yAa"/>
                                                     <constraint firstAttribute="trailing" secondItem="6Wi-Qq-LMc" secondAttribute="trailing" id="oaB-HG-Umn"/>
                                                     <constraint firstAttribute="bottom" secondItem="6SF-Lg-5Ey" secondAttribute="bottom" constant="8" id="xPB-pb-Dy7"/>
                                                 </constraints>
@@ -309,7 +310,7 @@
                                 <rect key="frame" x="0.0" y="56" width="414" height="567"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="friendsCell" focusStyle="custom" rowHeight="50" id="WUh-An-sD3" customClass="FriendsListTableViewCell" customModule="Messenger" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="friendsCell" focusStyle="custom" rowHeight="50" id="WUh-An-sD3" customClass="FriendsListTableViewCell" customModule="Messenger" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WUh-An-sD3" id="qF0-DZ-NIh">

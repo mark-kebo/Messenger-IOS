@@ -25,18 +25,34 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.chatTableView.transform = CGAffineTransform(scaleX: 1, y: -1);
         provider = VKProvider()
+        
         chatTableView.separatorStyle = .none
         navigationItem.title = chatName
+        textField.clearButtonMode = .whileEditing
         
         chatTableView.delegate = self
         chatTableView.dataSource = self
         
         registerForKeyboardNotifications()
+        startLongPoll()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.registerData()
+    }
+    
+    private func startLongPoll() {
+        provider?.getLongPollServer(callBack: { [weak self] in
+            self?.updateUI()
+        })
+    }
+    
+    private func updateUI() {
+        provider?.registrationLongPoll(callBack: { [weak self] () in
+            self?.registerData()
+            self?.startLongPoll()
+        })
     }
     
     private func registerData() {
@@ -50,17 +66,31 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         return messages.count
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Copy text to clipboard", style: .default, handler: { [weak self] action in
+            UIPasteboard.general.string = self?.messages[indexPath.row].message
+        }))
+        alert.addAction(UIAlertAction(title: "Delete message", style: .destructive, handler: { action in
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let raw = messages[indexPath.row]
         let cell:PrivateMessagesListTableViewCell = self.chatTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! PrivateMessagesListTableViewCell
         cell.transform = CGAffineTransform(scaleX: 1, y: -1);
         cell.setTextMessage(text: raw.message, isMine: raw.isMine)
         cell.setDate(date: raw.date, isMine: raw.isMine)
+        cell.selectionStyle = .none
         cell.prepareForReuse()
         return cell
     }
 
     @IBAction func sendMessage(_ sender: Any) {
+        provider?.send(message: textField.text!, userId: chatId!)
         textField.resignFirstResponder()
     }
     
