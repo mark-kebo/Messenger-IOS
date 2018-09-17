@@ -34,11 +34,31 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
         messagesList.delegate = self
         messagesList.dataSource = self
         searchChat.delegate = self
+        
+        startLongPoll()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.registerData()
     }
     
     @objc private func handleRefresh(_ refreshControl: UIRefreshControl) {
         self.registerData()
         refreshControl.endRefreshing()
+    }
+    
+    private func startLongPoll() {
+        provider?.getLongPollServer(callBack: { [weak self] in
+            self?.updateUI()
+        })
+    }
+    
+    private func updateUI() {
+        provider?.registrationLongPoll(callBack: { [weak self] () in
+            self?.registerData()
+            self?.startLongPoll()
+        })
     }
     
     private func registerData() {
@@ -47,11 +67,6 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
             self?.filteredMessages = messages
             self?.messagesList.reloadData()
         })
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.registerData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,6 +86,7 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
                                                 cell.setCountUnreadMessages(count: (self?.filteredMessages[indexPath.row].unreadCount)!)
                                                 cell.prepareForReuse()
         }
+        cell.selectionStyle = .none
         return cell
     }
     
