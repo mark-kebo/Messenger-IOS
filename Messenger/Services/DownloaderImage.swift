@@ -35,10 +35,10 @@ public class DownloaderImage: DownloaderImageProtocol {
         serialQueue = DispatchQueue(label: "queue")
     }
     
-    func downloadImage(session: URLSession, imagePath: String, name: String, completionHandler: @escaping ImageCacheLoaderCompletionHandler) {
+    func download(imageWithSession session: URLSession, imagePath: String, name: String, completionHandler: @escaping ImageCacheLoaderCompletionHandler) {
         //достал из кэша по ключу объект image что бы избежать повторного скачивание
         serialQueue.async {
-            if let image = self.cache.checkImageInCache(key: imagePath as NSString) {
+            if let image = self.cache.check(imageInCacheBy: imagePath as NSString) {
                 DispatchQueue.main.async {
                     completionHandler(image)
                 }
@@ -48,7 +48,7 @@ public class DownloaderImage: DownloaderImageProtocol {
                     guard let data = data , error == nil, let img = UIImage(data: data) else { return }
                     //убираю объект image в кэш с ключом
                     self?.serialQueue.async {
-                        self?.cache.addImageToCache(key: name as NSString, object: img)
+                        self?.cache.add(imageToCacheBy: name as NSString, and: img)
                         DispatchQueue.main.async {
                             completionHandler(img)
                         }

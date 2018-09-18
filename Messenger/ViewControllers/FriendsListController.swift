@@ -50,13 +50,13 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
     // create a cell for each table view row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // создаем новую ячейку при необходимости или повторно используем старую
-        let raw = filteredData[indexPath.row]
+        let friend = filteredData[indexPath.row]
         let cell:FriendsListTableViewCell = self.friendsList.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! FriendsListTableViewCell
-        cell.setName(name: "\(raw.name!) \(raw.surname!)")
-        downloadImageProcess?.downloadImage(session: session, imagePath: raw.avaImgUrl!,
-                                            name: "\(raw.name!)\(raw.surname!)") { [weak self] (image) in
-                                                cell.setAvatar(image: image)
-                                                cell.setActivity(isOnline: (self?.filteredData[indexPath.row].isOnline)!)
+        cell.set(name: "\(friend.name!) \(friend.surname!)")
+        downloadImageProcess?.download(imageWithSession: session, imagePath: friend.avaImgUrl!,
+                                            name: "\(friend.name!)\(friend.surname!)") { [weak self] (image) in
+                                                cell.set(avatar: image)
+                                                cell.set(activity: (self?.filteredData[indexPath.row].isOnline)!)
                                                 cell.prepareForReuse()
         }
         return cell
@@ -67,7 +67,7 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         let delete = UITableViewRowAction(style: .default, title: "Delete") { [weak self] (_, indexPath) in
             let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
-                self?.provider?.deleteFriend(byId: (self?.filteredData[indexPath.row].id)!)
+                self?.provider?.delete(friendBy: (self?.filteredData[indexPath.row].id)!)
                 self?.registerData()
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in }))
@@ -90,7 +90,7 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
     
     private func registerData() {
         //захват self
-        provider?.getFriendsList(treatmentFriends: { [weak self] (friends) in
+        provider?.get(friendsListWith: { [weak self] (friends) in
             self?.bioFriends = friends
             self?.filteredData = friends
             self?.friendsList.reloadData()

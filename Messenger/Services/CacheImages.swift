@@ -11,11 +11,11 @@ import UIKit
 class CacheImages: CacheProtocol {
     var dictionaryCache = [NSString: UIImage]()
     
-    func addImageToCache(key: NSString, object: UIImage) {
+    func add(imageToCacheBy key: NSString, and object: UIImage) {
         dictionaryCache[key] = object
     }
     
-    func checkImageInCache(key: NSString) -> UIImage? {
+    func check(imageInCacheBy key: NSString) -> UIImage? {
         return dictionaryCache[key]
     }
 }

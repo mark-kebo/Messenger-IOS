@@ -9,8 +9,10 @@
 import Foundation
 
 protocol PrivateChatProviderProtocol {
-    func getChatMessagesList(byId: String, treatmentMessages: @escaping ([PrivateMessage]) -> Void)
-    func send(message: String, userId: String)
-    func getLongPollServer(callBack: @escaping () -> Void)
-    func registrationLongPoll(callBack: @escaping () -> Void)
+    func get(chatMessagesListBy id: String, with treatmentMessages: @escaping ([PrivateMessage]) -> Void)
+    func send(message: String, byUserId id: String)
+    func get(longPollServerWith callBack: @escaping () -> Void)
+    func registration(longPollWith callBack: @escaping () -> Void)
+    func markAsRead(messagesBy id: String)
+    func delete(messageBy id: NSNumber)
 }

@@ -12,4 +12,6 @@ struct PrivateMessage {
     var message: String
     var date: NSNumber
     var isMine: Bool
+    var isRead: Bool
+    var id: NSNumber
 }

@@ -17,7 +17,7 @@ class PrivateMessagesListTableViewCell: UITableViewCell {
     private let colorBackgroundMine = UIColor(red:0.88, green:0.95, blue:0.98, alpha:1.0)
     private let colorBackgroundDontMine = UIColor(red:0.93, green:0.93, blue:0.95, alpha:1.0)
     
-    public func setTextMessage(text: String, isMine: Bool) {
+    public func set(textMessage text: String, isMine: Bool, isRead: Bool) {
         message.text = text
         bubbleMessage.layer.cornerRadius = 20
         if !isMine {
@@ -26,16 +26,18 @@ class PrivateMessagesListTableViewCell: UITableViewCell {
             message.textAlignment = .left
             dateLabel.textAlignment = .left
             bubbleMessage.backgroundColor = colorBackgroundDontMine
+            backgroundColor = nil
         } else {
             leadingConstraintBubble.priority = UILayoutPriority(rawValue: 10.0);
             trailingConstraintBubble.priority = UILayoutPriority(rawValue: 999.0);
             message.textAlignment = .right
             dateLabel.textAlignment = .right
             bubbleMessage.backgroundColor = colorBackgroundMine
+            isRead ? (backgroundColor = nil) : (backgroundColor = colorBackgroundMine)
         }
     }
     
-    public func setDate(date: NSNumber, isMine: Bool) {
+    public func set(date: NSNumber, isMine: Bool) {
         let date = Date(timeIntervalSince1970: date as! Double)
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(abbreviation: "GMT")

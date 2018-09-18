@@ -24,19 +24,19 @@ class MessagesListTableViewCell: UITableViewCell {
         avatar?.clipsToBounds = true
     }
     
-    public func setName(name: String) {
+    public func set(name: String) {
         self.name?.text = name
     }
     
-    public func setTextLastMessage(text: String, isRead: Bool) {
+    public func set(textLastMessage text: String, isRead: Bool) {
         let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: text)
-        attributedString.setColor(color: UIColor(red:0.13, green:0.51, blue:1.00, alpha:1.0), forText: "You:")
+        attributedString.set(color: UIColor(red:0.13, green:0.51, blue:1.00, alpha:1.0), forText: "You:")
         lastMessage.attributedText = attributedString
         bubbleLastMessage.layer.cornerRadius = bubbleLastMessage.layer.frame.height / 2
         isRead ? (bubbleLastMessage.backgroundColor = nil) : (bubbleLastMessage.backgroundColor = colorBackground)
     }
     
-    public func setDate(date: NSNumber) {
+    public func set(date: NSNumber) {
         let date = Date(timeIntervalSince1970: date as! Double)
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(abbreviation: "GMT")
@@ -46,7 +46,7 @@ class MessagesListTableViewCell: UITableViewCell {
         self.date?.text = strDate
     }
     
-    public func setCountUnreadMessages(count: NSNumber) {
+    public func set(countUnreadMessages count: NSNumber) {
         if count != 0 {
             countUnreadMessages.isHidden = false
             countUnreadMessages.clipsToBounds = true
@@ -61,7 +61,7 @@ class MessagesListTableViewCell: UITableViewCell {
 }
 
 extension NSMutableAttributedString {
-    func setColor(color: UIColor, forText stringValue: String) {
+    func set(color: UIColor, forText stringValue: String) {
         let range: NSRange = self.mutableString.range(of: stringValue, options: .caseInsensitive)
         self.addAttribute(NSAttributedStringKey.foregroundColor, value: color, range: range)
     }
