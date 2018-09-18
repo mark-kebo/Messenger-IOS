@@ -13,18 +13,18 @@ class FriendsListTableViewCell: UITableViewCell {
     @IBOutlet weak private var name: UILabel!
     @IBOutlet weak private var activity: UILabel!
     
-    public func setAvatar(image: UIImage) {
+    public func set(avatar image: UIImage) {
         avatar?.image = image
         avatar?.layer.masksToBounds = false
         avatar?.layer.cornerRadius = avatar.layer.frame.height / 2
         avatar?.clipsToBounds = true
     }
     
-    public func setName(name: String) {
+    public func set(name: String) {
         self.name?.text = name
     }
     
-    public func setActivity(isOnline: Bool) {
+    public func set(activity isOnline: Bool) {
         if isOnline {
             activity.isHidden = false
             activity.clipsToBounds = true

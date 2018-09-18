@@ -49,20 +49,20 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     private func startLongPoll() {
-        provider?.getLongPollServer(callBack: { [weak self] in
+        provider?.get(longPollServerWith: { [weak self] in
             self?.updateUI()
         })
     }
     
     private func updateUI() {
-        provider?.registrationLongPoll(callBack: { [weak self] () in
+        provider?.registration(longPollWith: { [weak self] () in
             self?.registerData()
             self?.startLongPoll()
         })
     }
     
     private func registerData() {
-        provider?.getMessagesList(treatmentMessages: { [weak self] (messages) in
+        provider?.get(messagesListWith: { [weak self] (messages) in
             self?.messages = messages
             self?.filteredMessages = messages
             self?.messagesList.reloadData()
@@ -74,16 +74,16 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let raw = filteredMessages[indexPath.row]
+        let message = filteredMessages[indexPath.row]
         let cell:MessagesListTableViewCell = self.messagesList.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! MessagesListTableViewCell
-        cell.setName(name: "\(raw.person.name!) \(raw.person.surname!)")
-        downloadImageProcess?.downloadImage(session: session, imagePath: raw.person.avaImgUrl!,
-                                            name: "\(raw.person.name!)\(raw.person.surname!)") { [weak self] (image) in
+        cell.set(name: "\(message.person.name!) \(message.person.surname!)")
+        downloadImageProcess?.download(imageWithSession: session, imagePath: message.person.avaImgUrl!,
+                                            name: "\(message.person.name!)\(message.person.surname!)") { [weak self] (image) in
                                                 cell.setAvatar(image: image)
-                                                cell.setDate(date: (self?.filteredMessages[indexPath.row].lastDateMessage)!)
-                                                cell.setTextLastMessage(text: (self?.filteredMessages[indexPath.row].lastMessage)!,
+                                                cell.set(date: (self?.filteredMessages[indexPath.row].lastDateMessage)!)
+                                                cell.set(textLastMessage: (self?.filteredMessages[indexPath.row].lastMessage)!,
                                                                         isRead: (self?.filteredMessages[indexPath.row].isSentRead)!)
-                                                cell.setCountUnreadMessages(count: (self?.filteredMessages[indexPath.row].unreadCount)!)
+                                                cell.set(countUnreadMessages: (self?.filteredMessages[indexPath.row].unreadCount)!)
                                                 cell.prepareForReuse()
         }
         cell.selectionStyle = .none
@@ -102,7 +102,7 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
         let delete = UITableViewRowAction(style: .default, title: "Delete") { [weak self] (_, indexPath) in
             let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
-                self?.provider?.deleteChat(byId: (self?.filteredMessages[indexPath.row].id)!)
+                self?.provider?.delete(chatBy: (self?.filteredMessages[indexPath.row].id)!)
                 self?.registerData()
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in }))

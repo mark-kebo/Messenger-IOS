@@ -18,7 +18,7 @@ import UIKit
 
 class FileSystemImagesCache: CacheProtocol {
     
-    func addImageToCache(key: NSString, object: UIImage) {
+    func add(imageToCacheBy key: NSString, and object: UIImage) {
         //внесение изменений в файловую систему, возвращение общего объекта ФМ, urls-возвращает массив адресов для общего каталога
         let documentsDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
         //добавление к строке адреса к каталогу название файла
@@ -35,7 +35,7 @@ class FileSystemImagesCache: CacheProtocol {
         }
     }
     
-    func checkImageInCache(key: NSString) -> UIImage? {
+    func check(imageInCacheBy key: NSString) -> UIImage? {
         //создаем новую строку с адресом добавляя в нее название файла
         let path = self.getDirectoryPath().appendingPathComponent("\(key).jpg")
         //возвращаем файл лежащий по адресу

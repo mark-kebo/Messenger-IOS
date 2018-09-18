@@ -21,7 +21,7 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
     }
     
     // MARK: LongPoll
-    public func getLongPollServer(callBack: @escaping () -> Void) {
+    public func get(longPollServerWith callBack: @escaping () -> Void) {
         serialQueue.async {
             VKRequest(method: "messages.getLongPollServer", parameters: ["need_pts":"0"]).execute(resultBlock: { [weak self] (response) in
                 let json = response?.json as! Dictionary<String, Any>
@@ -37,7 +37,7 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
         }
     }
     
-    public func registrationLongPoll(callBack: @escaping () -> Void) {
+    public func registration(longPollWith callBack: @escaping () -> Void) {
         serialQueue.async {
             let url: URL! = URL(string: "https://\(self.server!)?act=a_check&key=\(self.key!)&ts=\(self.ts!.stringValue)&wait=25&mode=2&version=2")
             self.session.dataTask(with: url, completionHandler: { (data, _, error) -> Void in
@@ -49,7 +49,7 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
     }
     
     // MARK: FriendsList
-    public func getFriendsList(treatmentFriends: @escaping ([Person]) -> Void) {
+    public func get(friendsListWith treatmentFriends: @escaping ([Person]) -> Void) {
         serialQueue.async {
             var bioFriends = [Person]()
             VKRequest(method: "friends.get", parameters: ["fields":"photo_50", "order":"hints"]).execute(resultBlock: { (response) in
@@ -71,10 +71,10 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
         }
     }
 
-    public func deleteFriend(byId: NSNumber) {
+    public func delete(friendBy id: NSNumber) {
         serialQueue.async {
-            VKRequest(method: "friends.delete", parameters: ["user_id":byId.stringValue]).execute(resultBlock: { (response) in
-                print("Friend \(byId.stringValue) was deleted")
+            VKRequest(method: "friends.delete", parameters: ["user_id":id.stringValue]).execute(resultBlock: { (response) in
+                print("Friend \(id.stringValue) was deleted")
             }, errorBlock: { (error) in
                 print("ERROR: \(String(describing: error))")
             })
@@ -82,7 +82,7 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
     }
     
     //MARK: MessagesList
-    public func getMessagesList(treatmentMessages: @escaping ([PreliminaryMessage]) -> Void) {
+    public func get(messagesListWith treatmentMessages: @escaping ([PreliminaryMessage]) -> Void) {
         serialQueue.async {
             // get list prev messages
             var conversations = [PreliminaryMessage]()
@@ -91,12 +91,12 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
                 let profiles = json["profiles"] as! Array<Dictionary<String, Any>>
                 let items = json["items"] as! Array<Dictionary<String, Any>>
                 profiles.forEach {
-                    if let gettingMessage = (self?.getPreliminaryMessages(person: Person(id: $0["id"] as? NSNumber,
+                    if let gettingMessage = (self?.get(preliminaryMessagesOf: Person(id: $0["id"] as? NSNumber,
                                                                                          name: $0["first_name"] as? String,
                                                                                          surname: $0["last_name"] as? String,
                                                                                          avaImgUrl: $0["photo_50"] as? String,
                                                                                          isOnline: $0["online"] as? Bool),
-                                                                          objects: items)) {
+                                                        and: items)) {
                         conversations = conversations + gettingMessage
                     }
                 }
@@ -111,7 +111,7 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
         }
     }
     
-    private func getPreliminaryMessages(person: Person, objects: Array<Dictionary<String, Any>>) -> [PreliminaryMessage]? {
+    private func get(preliminaryMessagesOf person: Person, and objects: Array<Dictionary<String, Any>>) -> [PreliminaryMessage]? {
         var messages = [PreliminaryMessage]()
         for object in objects {
             let lastMessage = object["last_message"] as! Dictionary<String, Any>
@@ -122,9 +122,9 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
             let isSentRead: Bool
             conversation["in_read"] as! NSNumber != conversation["out_read"] as! NSNumber ? (isSentRead = false) : (isSentRead = true)
             if let out = lastMessage["out"] as? Bool {
-                out ? (textLastMessage = "You: \(setTextLastMessages(byLastMessages: lastMessage))") : (textLastMessage = setTextLastMessages(byLastMessages: lastMessage))
+                out ? (textLastMessage = "You: \(set(textLastMessagesBy: lastMessage))") : (textLastMessage = set(textLastMessagesBy: lastMessage))
             } else {
-                textLastMessage = setTextLastMessages(byLastMessages: lastMessage)
+                textLastMessage = set(textLastMessagesBy: lastMessage)
             }
             if peer["type"] as? String == "user" {
                 if person.id == (lastMessage["peer_id"] as! NSNumber) {
@@ -163,10 +163,10 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
         return messages
     }
     
-    private func setTextLastMessages(byLastMessages: Dictionary<String, Any>) -> String {
-        var textLastMessage = byLastMessages["text"] as! String
+    private func set(textLastMessagesBy lastMessages: Dictionary<String, Any>) -> String {
+        var textLastMessage = lastMessages["text"] as! String
         if textLastMessage == "" {
-            if let attachments = byLastMessages["attachments"] as? Array<Dictionary<String, Any>> {
+            if let attachments = lastMessages["attachments"] as? Array<Dictionary<String, Any>> {
                 attachments.forEach {
                     switch $0["type"] as! String {
                     case "photo": textLastMessage = "Photo"
@@ -190,9 +190,9 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
         return textLastMessage
     }
     
-    private func setTextMessages(byMessages: Dictionary<String, Any>) -> String {
-        var textMessage = byMessages["body"] as! String
-        if let attachments = byMessages["attachments"] as? Array<Dictionary<String, Any>> {
+    private func set(textMessagesBy messages: Dictionary<String, Any>) -> String {
+        var textMessage = messages["body"] as! String
+        if let attachments = messages["attachments"] as? Array<Dictionary<String, Any>> {
             attachments.forEach {
                 switch $0["type"] as! String {
                 case "photo": textMessage = setText(name: "photo", object: $0)
@@ -229,10 +229,10 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
         }
     }
     
-    public func deleteChat(byId: NSNumber) {
+    public func delete(chatBy id: NSNumber) {
         serialQueue.async {
-            VKRequest(method: "messages.deleteConversation", parameters: ["peer_id":byId.stringValue]).execute(resultBlock: { (response) in
-                print("Chat \(byId.stringValue) was deleted")
+            VKRequest(method: "messages.deleteConversation", parameters: ["peer_id":id.stringValue]).execute(resultBlock: { (response) in
+                print("Chat \(id.stringValue) was deleted")
             }, errorBlock: { (error) in
                 print("ERROR: \(error as! String)")
             })
@@ -240,18 +240,20 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
     }
     
     //MARK: Chat
-    public func getChatMessagesList(byId: String, treatmentMessages: @escaping ([PrivateMessage]) -> Void) {
+    public func get(chatMessagesListBy id: String, with treatmentMessages: @escaping ([PrivateMessage]) -> Void) {
         serialQueue.async {
             var messages = [PrivateMessage]()
-            VKRequest(method: "messages.getHistory", parameters: ["user_id":byId, "count":"20", "rew":"1"]).execute(resultBlock: { [weak self] (response) in
+            //, "start_message_id":startId
+            VKRequest(method: "messages.getHistory", parameters: ["user_id":id, "count":"50", "rew":"1"]).execute(resultBlock: { [weak self] (response) in
                 let json = response?.json as! Dictionary<String, Any>
                 let items = json["items"] as! Array<Dictionary<String, Any>>
-//                print(json)
                 items.forEach {
-                    let text = self?.setTextMessages(byMessages: $0)
+                    let text = self?.set(textMessagesBy: $0)
                     messages.append(PrivateMessage(message: text!,
                                                    date: $0["date"] as! NSNumber,
-                                                   isMine: $0["out"] as! Bool) )
+                                                   isMine: $0["out"] as! Bool,
+                                                   isRead: $0["read_state"] as! Bool,
+                                                   id: $0["id"] as! NSNumber) )
                 }
                 DispatchQueue.main.async {
                     treatmentMessages(messages)
@@ -262,10 +264,10 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
         }
     }
     
-    public func send(message: String, userId:String) {
+    public func send(message: String, byUserId id: String) {
         serialQueue.async {
-            if message != "" && userId != "" {
-                VKRequest(method: "messages.send", parameters: ["message":message, "peer_id":userId]).execute(resultBlock: { (response) in
+            if message != "" && id != "" {
+                VKRequest(method: "messages.send", parameters: ["message":message, "peer_id":id]).execute(resultBlock: { (response) in
                     print("Message was sent!")
                 }, errorBlock: { (error) in
                     print("ERROR: \(error as! String)")
@@ -274,4 +276,23 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
         }
     }
     
+    public func markAsRead(messagesBy id: String) {
+        serialQueue.async {
+            VKRequest(method: "messages.markAsRead", parameters: ["peer_id":id]).execute(resultBlock: { (response) in
+                print("Messages marked as read!")
+            }, errorBlock: { (error) in
+                print("ERROR: \(error as! String)")
+            })
+        }
+    }
+    
+    public func delete(messageBy id: NSNumber){
+        serialQueue.async {
+            VKRequest(method: "messages.delete", parameters: ["message_ids":id.stringValue, "delete_for_all":"1"]).execute(resultBlock: { (response) in
+                print("Message was deleted!")
+            }, errorBlock: { (error) in
+                print("ERROR: \(error as! String)")
+            })
+        }
+    }
 }
