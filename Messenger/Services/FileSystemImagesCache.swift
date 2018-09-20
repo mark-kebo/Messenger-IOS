@@ -24,7 +24,7 @@ class FileSystemImagesCache: CacheProtocol {
         //добавление к строке адреса к каталогу название файла
         let fileURL = documentsDirectory.appendingPathComponent("\(key).jpg")
         //перевод в формат JPEG и проверка на существование файла по указанному адресу
-        if let data = UIImageJPEGRepresentation(object, 1.0),
+        if let data = object.jpegData(compressionQuality: 1.0),
             !FileManager.default.fileExists(atPath: fileURL.path) {
             do {
                 //записывает данные по адресу

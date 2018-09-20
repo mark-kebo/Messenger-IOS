@@ -63,6 +63,6 @@ class MessagesListTableViewCell: UITableViewCell {
 extension NSMutableAttributedString {
     func set(color: UIColor, forText stringValue: String) {
         let range: NSRange = self.mutableString.range(of: stringValue, options: .caseInsensitive)
-        self.addAttribute(NSAttributedStringKey.foregroundColor, value: color, range: range)
+        self.addAttribute(NSAttributedString.Key.foregroundColor, value: color, range: range)
     }
 }

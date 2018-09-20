@@ -27,7 +27,7 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
         downloadImageProcess = DownloaderImage()
         
         refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: UIControlEvents.valueChanged)
+        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: UIControl.Event.valueChanged)
         messagesList.addSubview(refreshControl)
         messagesList.separatorStyle = .none
         
@@ -100,7 +100,7 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
     //Swipe to delete and send messages
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .default, title: "Delete") { [weak self] (_, indexPath) in
-            let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
                 self?.provider?.delete(chatBy: (self?.filteredMessages[indexPath.row].id)!)
                 self?.registerData()

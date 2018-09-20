@@ -92,10 +92,10 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
                 let items = json["items"] as! Array<Dictionary<String, Any>>
                 profiles.forEach {
                     if let gettingMessage = (self?.get(preliminaryMessagesOf: Person(id: $0["id"] as? NSNumber,
-                                                                                         name: $0["first_name"] as? String,
-                                                                                         surname: $0["last_name"] as? String,
-                                                                                         avaImgUrl: $0["photo_50"] as? String,
-                                                                                         isOnline: $0["online"] as? Bool),
+                                                                                     name: $0["first_name"] as? String,
+                                                                                     surname: $0["last_name"] as? String,
+                                                                                     avaImgUrl: $0["photo_50"] as? String,
+                                                                                     isOnline: $0["online"] as? Bool),
                                                         and: items)) {
                         conversations = conversations + gettingMessage
                     }
@@ -129,11 +129,11 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
             if peer["type"] as? String == "user" {
                 if person.id == (lastMessage["peer_id"] as! NSNumber) {
                     messages.append(PreliminaryMessage(person: person,
-                                              lastMessage: textLastMessage,
-                                              lastDateMessage: lastMessage["date"] as! NSNumber,
-                                              id: peer["id"] as? NSNumber,
-                                              unreadCount: count != nil ? count : 0,
-                                              isSentRead: isSentRead))
+                                                       lastMessage: textLastMessage,
+                                                       lastDateMessage: lastMessage["date"] as! NSNumber,
+                                                       id: peer["id"] as? NSNumber,
+                                                       unreadCount: count != nil ? count : 0,
+                                                       isSentRead: isSentRead))
                 }
             } else {
                 if let conversationIds = conversation["chat_settings"] as? Dictionary<String, Any> {
@@ -147,15 +147,15 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
                     //nid fix this. mb???
                     if person.id == activeIds.first {
                         messages.append(PreliminaryMessage(person: Person(id: activeIds.first!,
-                                                                 name: conversationIds["title"] as? String,
-                                                                 surname: "",
-                                                                 avaImgUrl: photoUrl,
-                                                                 isOnline: nil),
-                                                  lastMessage: textLastMessage,
-                                                  lastDateMessage: lastMessage["date"] as! NSNumber,
-                                                  id: peer["id"] as? NSNumber,
-                                                  unreadCount: count != nil ? count : 0,
-                                                  isSentRead: isSentRead))
+                                                                          name: conversationIds["title"] as? String,
+                                                                          surname: "",
+                                                                          avaImgUrl: photoUrl,
+                                                                          isOnline: nil),
+                                                           lastMessage: textLastMessage,
+                                                           lastDateMessage: lastMessage["date"] as! NSNumber,
+                                                           id: peer["id"] as? NSNumber,
+                                                           unreadCount: count != nil ? count : 0,
+                                                           isSentRead: isSentRead))
                     }
                 }
             }
@@ -190,42 +190,37 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
         return textLastMessage
     }
     
-    private func set(textMessagesBy messages: Dictionary<String, Any>) -> String {
-        var textMessage = messages["body"] as! String
-        if let attachments = messages["attachments"] as? Array<Dictionary<String, Any>> {
+    private func set(attachmentsBy attachments: Dictionary<String, Any>) -> [AttachmentMessage]? {
+        if let attachments = attachments["attachments"] as? Array<Dictionary<String, Any>> {
+            var attachmentsToReturn = [AttachmentMessage]()
+            print(attachments)
             attachments.forEach {
                 switch $0["type"] as! String {
-                case "photo": textMessage = setText(name: "photo", object: $0)
-                case "video": textMessage = setText(name: "video", object: $0)
-                case "audio": textMessage = setText(name: "audio", object: $0)
-                case "doc": textMessage = setText(name: "doc", object: $0)
-                case "link": textMessage = "Link"
-                case "market": textMessage = "Market"
-                case "market_album": textMessage = "Market album"
-                case "wall": textMessage = setText(name: "wall", object: $0)
-                case "wall_reply": textMessage = setText(name: "wall_reply", object: $0)
-                case "sticker": textMessage = setText(name: "sticker", object: $0)
-                case "gift": textMessage = "Gift"
+                case "photo":
+                    
+                    var attachment: AttachmentMessage! = AttachmentMessage()
+                    attachment.imgUrl = ""
+                    attachment.text = ""
+                    attachment.url = ""
+                    attachmentsToReturn.append(attachment)
+//                case "video":
+//                case "audio":
+//                case "doc":
+//                case "link":
+//                case "market":
+//                case "market_album":
+//                case "wall":
+//                case "wall_reply":
+//                case "sticker":
+//                case "gift":
                 default:
                     break
                 }
                 return
             }
-        }
-        return textMessage
-    }
-    
-    private func setText(name: String, object: Dictionary<String, Any>) -> String {
-        let currentObject = object[name] as! Dictionary<String, Any>
-        switch name {
-        case "wall": return currentObject["text"] as! String
-        case "video": return currentObject["description"] as! String
-        case "audio": return currentObject["url"] as! String
-        case "sticker": return currentObject["photo_256"] as! String
-        case "photo": return currentObject["photo_130"] as! String
-        case "doc": return currentObject["url"] as! String
-        default:
-            return ""
+            return attachmentsToReturn
+        } else {
+            return nil
         }
     }
     
@@ -234,26 +229,26 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
             VKRequest(method: "messages.deleteConversation", parameters: ["peer_id":id.stringValue]).execute(resultBlock: { (response) in
                 print("Chat \(id.stringValue) was deleted")
             }, errorBlock: { (error) in
-                print("ERROR: \(error as! String)")
+                print("ERROR: \(String(describing: error))")
             })
         }
     }
     
     //MARK: Chat
-    public func get(chatMessagesListBy id: String, with treatmentMessages: @escaping ([PrivateMessage]) -> Void) {
+    public func get(chatMessagesListBy id: String, lastMessageId: String, count: String, with treatmentMessages: @escaping ([PrivateMessage]) -> Void) {
         serialQueue.async {
             var messages = [PrivateMessage]()
-            //, "start_message_id":startId
-            VKRequest(method: "messages.getHistory", parameters: ["user_id":id, "count":"50", "rew":"1"]).execute(resultBlock: { [weak self] (response) in
+            VKRequest(method: "messages.getHistory", parameters: ["user_id":id, "count":count, "rew":"1", "start_message_id":lastMessageId, "offset":"0"]).execute(resultBlock: { [weak self] (response) in
                 let json = response?.json as! Dictionary<String, Any>
                 let items = json["items"] as! Array<Dictionary<String, Any>>
                 items.forEach {
-                    let text = self?.set(textMessagesBy: $0)
-                    messages.append(PrivateMessage(message: text!,
+                    let attachments = self?.set(attachmentsBy: $0)
+                    messages.append(PrivateMessage(message: $0["body"] as! String,
                                                    date: $0["date"] as! NSNumber,
                                                    isMine: $0["out"] as! Bool,
                                                    isRead: $0["read_state"] as! Bool,
-                                                   id: $0["id"] as! NSNumber) )
+                                                   id: $0["id"] as! NSNumber,
+                                                   attachments: attachments) )
                 }
                 DispatchQueue.main.async {
                     treatmentMessages(messages)
@@ -270,7 +265,7 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
                 VKRequest(method: "messages.send", parameters: ["message":message, "peer_id":id]).execute(resultBlock: { (response) in
                     print("Message was sent!")
                 }, errorBlock: { (error) in
-                    print("ERROR: \(error as! String)")
+                    print("ERROR: \(String(describing: error))")
                 })
             }
         }
@@ -281,7 +276,7 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
             VKRequest(method: "messages.markAsRead", parameters: ["peer_id":id]).execute(resultBlock: { (response) in
                 print("Messages marked as read!")
             }, errorBlock: { (error) in
-                print("ERROR: \(error as! String)")
+                print("ERROR: \(String(describing: error))")
             })
         }
     }
@@ -291,7 +286,11 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
             VKRequest(method: "messages.delete", parameters: ["message_ids":id.stringValue, "delete_for_all":"1"]).execute(resultBlock: { (response) in
                 print("Message was deleted!")
             }, errorBlock: { (error) in
-                print("ERROR: \(error as! String)")
+                VKRequest(method: "messages.delete", parameters: ["message_ids":id.stringValue, "delete_for_all":"0"]).execute(resultBlock: { (response) in
+                    print("Message was deleted!")
+                }, errorBlock: { (error) in
+                    print("ERROR: \(String(describing: error))")
+                })
             })
         }
     }
