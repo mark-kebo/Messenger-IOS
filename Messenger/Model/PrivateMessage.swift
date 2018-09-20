@@ -14,4 +14,5 @@ struct PrivateMessage {
     var isMine: Bool
     var isRead: Bool
     var id: NSNumber
+    var attachments: [AttachmentMessage]?
 }

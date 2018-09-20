@@ -27,7 +27,7 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         downloadImageProcess = DownloaderImage()
         
         refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: UIControlEvents.valueChanged)
+        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: UIControl.Event.valueChanged)
         friendsList.addSubview(refreshControl)
         friendsList.allowsSelection = false;
         friendsList.separatorStyle = .none
@@ -65,7 +65,7 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
     //Swipe to delete and send messages
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .default, title: "Delete") { [weak self] (_, indexPath) in
-            let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
                 self?.provider?.delete(friendBy: (self?.filteredData[indexPath.row].id)!)
                 self?.registerData()
