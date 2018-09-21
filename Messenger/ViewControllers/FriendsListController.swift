@@ -15,7 +15,6 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
     private var provider: FriendsListProviderProtocol?
     private var bioFriends = [Person]()
     private var downloadImageProcess: DownloaderImageProtocol?
-    private let session = URLSession(configuration: URLSessionConfiguration.default)
     private var filteredData = [Person]()
     private var refreshControl: UIRefreshControl!
     private var currentId: String?
@@ -53,11 +52,11 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         let friend = filteredData[indexPath.row]
         let cell:FriendsListTableViewCell = self.friendsList.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! FriendsListTableViewCell
         cell.set(name: "\(friend.name!) \(friend.surname!)")
-        downloadImageProcess?.download(imageWithSession: session, imagePath: friend.avaImgUrl!,
-                                            name: "\(friend.name!)\(friend.surname!)") { [weak self] (image) in
-                                                cell.set(avatar: image)
-                                                cell.set(activity: (self?.filteredData[indexPath.row].isOnline)!)
-                                                cell.prepareForReuse()
+        cell.set(activity: (self.filteredData[indexPath.row].isOnline)!)
+        downloadImageProcess?.download(imageWithImagePath: friend.avaImgUrl!,
+                                       name: "\(friend.name!)\(friend.surname!)") { (image) in
+                                            cell.set(avatar: image)
+                                            cell.prepareForReuse()
         }
         return cell
     }

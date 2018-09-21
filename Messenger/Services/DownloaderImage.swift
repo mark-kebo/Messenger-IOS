@@ -25,8 +25,9 @@ import UIKit
 public class DownloaderImage: DownloaderImageProtocol {
     //  NSCache-временное хранение переходных пар ключ-значение(временное хранение объектов с временными данными)
 //    var cache: NSCache<NSString, UIImage>!
-    var cache: CacheProtocol
-    let serialQueue: DispatchQueue
+    private var cache: CacheProtocol
+    private let serialQueue: DispatchQueue
+    private let session = URLSession(configuration: URLSessionConfiguration.default)
     
     init() {
 //        self.cache = NSCache()
@@ -35,7 +36,7 @@ public class DownloaderImage: DownloaderImageProtocol {
         serialQueue = DispatchQueue(label: "queue")
     }
     
-    func download(imageWithSession session: URLSession, imagePath: String, name: String, completionHandler: @escaping ImageCacheLoaderCompletionHandler) {
+    func download(imageWithImagePath imagePath: String, name: String, completionHandler: @escaping ImageCacheLoaderCompletionHandler) {
         //достал из кэша по ключу объект image что бы избежать повторного скачивание
         serialQueue.async {
             if let image = self.cache.check(imageInCacheBy: imagePath as NSString) {
@@ -44,7 +45,7 @@ public class DownloaderImage: DownloaderImageProtocol {
                 }
             } else {
                 let url: URL! = URL(string: imagePath)
-                session.dataTask(with: url, completionHandler: { [weak self] (data, _, error) -> Void in
+                self.session.dataTask(with: url, completionHandler: { [weak self] (data, _, error) -> Void in
                     guard let data = data , error == nil, let img = UIImage(data: data) else { return }
                     //убираю объект image в кэш с ключом
                     self?.serialQueue.async {
