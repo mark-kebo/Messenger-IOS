@@ -41,7 +41,7 @@ class MessagesListTableViewCell: UITableViewCell {
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(abbreviation: "GMT")
         dateFormatter.locale = NSLocale.current
-        dateFormatter.dateFormat = "dd.MM"  //yyyy-MM-dd HH:mm
+        dateFormatter.dateFormat = "dd.MM"
         let strDate = dateFormatter.string(from: date)
         self.date?.text = strDate
     }

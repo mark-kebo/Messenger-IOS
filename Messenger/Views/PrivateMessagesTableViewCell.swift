@@ -16,9 +16,22 @@ class PrivateMessagesListTableViewCell: UITableViewCell {
     @IBOutlet weak var trailingConstraintBubble: NSLayoutConstraint!
     private let colorBackgroundMine = UIColor(red:0.88, green:0.95, blue:0.98, alpha:1.0)
     private let colorBackgroundDontMine = UIColor(red:0.93, green:0.93, blue:0.95, alpha:1.0)
+
     
-    public func set(textMessage text: String, isMine: Bool, isRead: Bool) {
-        message.text = text
+    public func set(textMessage text: String, isMine: Bool, isRead: Bool, attachments: [AttachmentMessage]?) {
+        self.message.text = text
+        self.prepareUI(isMine: isMine, isRead: isRead)
+        attachments?.forEach() {
+            let attributedString = NSMutableAttributedString()
+            let imgAttachment = NSTextAttachment()
+            imgAttachment.image = $0.img
+            imgAttachment.bounds.size = $0.img!.size
+            attributedString.append(NSAttributedString(attachment: imgAttachment))
+            self.message.attributedText = attributedString
+        }
+    }
+    
+    private func prepareUI(isMine: Bool, isRead: Bool) {
         bubbleMessage.layer.cornerRadius = 20
         if !isMine {
             leadingConstraintBubble.priority = UILayoutPriority(rawValue: 999.0);

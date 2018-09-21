@@ -119,7 +119,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let message = messages[indexPath.row]
         let cell:PrivateMessagesListTableViewCell = self.chatTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! PrivateMessagesListTableViewCell
         cell.transform = CGAffineTransform(scaleX: 1, y: -1);
-        cell.set(textMessage: message.message, isMine: message.isMine, isRead: message.isRead)
+        cell.set(textMessage: message.message, isMine: message.isMine, isRead: message.isRead, attachments: message.attachments)
         cell.set(date: message.date, isMine: message.isMine)
         cell.selectionStyle = .none
         cell.prepareForReuse()

@@ -6,10 +6,11 @@
 //  Copyright © 2018 Dmitry Vorozhbicky. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct AttachmentMessage {
     var text: String?
-    var imgUrl: String?
+    var img: UIImage?
     var url: String?
+    var id: NSNumber
 }

@@ -15,9 +15,11 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
     private var key: String?
     private let serialQueue: DispatchQueue
     private let session = URLSession(configuration: URLSessionConfiguration.default)
+    private var downloadImageProcess: DownloaderImageProtocol?
     
     init() {
         serialQueue = DispatchQueue(label: "queue")
+        downloadImageProcess = DownloaderImage()
     }
     
     // MARK: LongPoll
@@ -193,30 +195,31 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
     private func set(attachmentsBy attachments: Dictionary<String, Any>) -> [AttachmentMessage]? {
         if let attachments = attachments["attachments"] as? Array<Dictionary<String, Any>> {
             var attachmentsToReturn = [AttachmentMessage]()
-            print(attachments)
             attachments.forEach {
                 switch $0["type"] as! String {
                 case "photo":
-                    
-                    var attachment: AttachmentMessage! = AttachmentMessage()
-                    attachment.imgUrl = ""
-                    attachment.text = ""
-                    attachment.url = ""
-                    attachmentsToReturn.append(attachment)
-//                case "video":
-//                case "audio":
-//                case "doc":
-//                case "link":
-//                case "market":
-//                case "market_album":
-//                case "wall":
-//                case "wall_reply":
-//                case "sticker":
-//                case "gift":
+                    let photo = $0["photo"] as! Dictionary<String, Any>
+                    //хз, надо сначала загрузить а потом вернуть
+                    self.downloadImageProcess?.download(imageWithImagePath: photo["photo_130"] as! String,
+                                                        name: (photo["id"] as! NSNumber).stringValue) { (image) in
+                                                            attachmentsToReturn.append(AttachmentMessage(text: photo["text"] as? String,
+                                                                                                         img: image,
+                                                                                                         url: photo["photo_604"] as? String,
+                                                                                                         id: photo["id"] as! NSNumber))
+                    }
+                    //                case "video":
+                    //                case "audio":
+                    //                case "doc":
+                    //                case "link":
+                    //                case "market":
+                    //                case "market_album":
+                    //                case "wall":
+                    //                case "wall_reply":
+                    //                case "sticker":
+                //                case "gift":
                 default:
                     break
                 }
-                return
             }
             return attachmentsToReturn
         } else {

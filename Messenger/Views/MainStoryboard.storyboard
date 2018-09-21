@@ -163,11 +163,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Bh-us-S5X">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
                                         <subviews>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="V4E-Ua-hDy">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V4E-Ua-hDy">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="622"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="privateMessagesCell" rowHeight="100" id="BD1-0B-54e" customClass="PrivateMessagesListTableViewCell" customModule="Messenger" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="privateMessagesCell" rowHeight="100" id="BD1-0B-54e" customClass="PrivateMessagesListTableViewCell" customModule="Messenger" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="414" height="100"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BD1-0B-54e" id="V5e-Tb-QyV">
@@ -175,16 +175,19 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SZ9-NF-kqc">
-                                                                    <rect key="frame" x="319.33333333333331" y="5" width="83.666666666666686" height="89.666666666666671"/>
+                                                                    <rect key="frame" x="320.33333333333331" y="5" width="83.666666666666686" height="89.666666666666671"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label " textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QRl-O8-K5i">
-                                                                            <rect key="frame" x="14.999999999999996" y="15" width="53.666666666666657" height="33.666666666666664"/>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label " textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QRl-O8-K5i">
+                                                                            <rect key="frame" x="14.999999999999996" y="15.000000000000002" width="53.666666666666657" height="19.666666666666671"/>
                                                                             <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="02.03.2017" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1oq-Bi-Lpi">
-                                                                            <rect key="frame" x="14.999999999999996" y="58.666666666666629" width="53.666666666666657" height="15"/>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="02.03.2017" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1oq-Bi-Lpi">
+                                                                            <rect key="frame" x="14.999999999999996" y="44.666666666666664" width="53.666666666666657" height="29.999999999999993"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="height" constant="30" id="gJw-6P-dTj"/>
+                                                                            </constraints>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                                             <color key="textColor" red="0.1333333333" green="0.50980392159999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <nil key="highlightedColor"/>
@@ -194,10 +197,10 @@
                                                                     <color key="tintColor" red="0.92941176470588238" green="0.92549019607843142" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <constraints>
                                                                         <constraint firstItem="QRl-O8-K5i" firstAttribute="top" secondItem="SZ9-NF-kqc" secondAttribute="top" constant="15" id="711-xi-Myq"/>
+                                                                        <constraint firstItem="1oq-Bi-Lpi" firstAttribute="top" secondItem="QRl-O8-K5i" secondAttribute="bottom" constant="10" id="I80-pa-lZY"/>
                                                                         <constraint firstAttribute="trailing" secondItem="1oq-Bi-Lpi" secondAttribute="trailing" constant="15" id="VAU-F4-uqc"/>
                                                                         <constraint firstAttribute="bottom" secondItem="1oq-Bi-Lpi" secondAttribute="bottom" constant="15" id="cJx-Iz-pk3"/>
-                                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="dsE-1o-bsM"/>
-                                                                        <constraint firstItem="1oq-Bi-Lpi" firstAttribute="top" secondItem="QRl-O8-K5i" secondAttribute="bottom" constant="10" id="qrj-lr-MQR"/>
+                                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="dsE-1o-bsM"/>
                                                                         <constraint firstItem="1oq-Bi-Lpi" firstAttribute="leading" secondItem="SZ9-NF-kqc" secondAttribute="leading" constant="15" id="vez-nm-LjG"/>
                                                                         <constraint firstItem="QRl-O8-K5i" firstAttribute="leading" secondItem="SZ9-NF-kqc" secondAttribute="leading" constant="15" id="zUB-EU-Yma"/>
                                                                         <constraint firstAttribute="trailing" secondItem="QRl-O8-K5i" secondAttribute="trailing" constant="15" id="zlr-ek-d9o"/>
@@ -220,6 +223,7 @@
                                                         </connections>
                                                     </tableViewCell>
                                                 </prototypes>
+                                                <sections/>
                                             </tableView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mjt-Kk-maZ">
                                                 <rect key="frame" x="0.0" y="622" width="414" height="50"/>
@@ -472,6 +476,6 @@
         <image name="user" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="tmg-qW-x7b"/>
+        <segue reference="sRg-l9-Jss"/>
     </inferredMetricsTieBreakers>
 </document>

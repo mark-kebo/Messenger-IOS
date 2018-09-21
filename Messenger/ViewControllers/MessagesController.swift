@@ -19,7 +19,6 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
     private var downloadImageProcess: DownloaderImageProtocol?
     private var currentId: String?
     private var currentName: String?
-    private let session = URLSession(configuration: URLSessionConfiguration.default)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,13 +76,13 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
         let message = filteredMessages[indexPath.row]
         let cell:MessagesListTableViewCell = self.messagesList.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! MessagesListTableViewCell
         cell.set(name: "\(message.person.name!) \(message.person.surname!)")
-        downloadImageProcess?.download(imageWithSession: session, imagePath: message.person.avaImgUrl!,
-                                            name: "\(message.person.name!)\(message.person.surname!)") { [weak self] (image) in
+        cell.set(date: self.filteredMessages[indexPath.row].lastDateMessage)
+        cell.set(textLastMessage: self.filteredMessages[indexPath.row].lastMessage,
+                 isRead: self.filteredMessages[indexPath.row].isSentRead!)
+        cell.set(countUnreadMessages: (self.filteredMessages[indexPath.row].unreadCount)!)
+        downloadImageProcess?.download(imageWithImagePath: message.person.avaImgUrl!,
+                                            name: "\(message.person.name!)\(message.person.surname!)") { (image) in
                                                 cell.setAvatar(image: image)
-                                                cell.set(date: (self?.filteredMessages[indexPath.row].lastDateMessage)!)
-                                                cell.set(textLastMessage: (self?.filteredMessages[indexPath.row].lastMessage)!,
-                                                                        isRead: (self?.filteredMessages[indexPath.row].isSentRead)!)
-                                                cell.set(countUnreadMessages: (self?.filteredMessages[indexPath.row].unreadCount)!)
                                                 cell.prepareForReuse()
         }
         cell.selectionStyle = .none
