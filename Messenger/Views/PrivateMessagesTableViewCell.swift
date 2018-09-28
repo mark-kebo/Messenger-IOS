@@ -16,18 +16,23 @@ class PrivateMessagesListTableViewCell: UITableViewCell {
     @IBOutlet weak var trailingConstraintBubble: NSLayoutConstraint!
     private let colorBackgroundMine = UIColor(red:0.88, green:0.95, blue:0.98, alpha:1.0)
     private let colorBackgroundDontMine = UIColor(red:0.93, green:0.93, blue:0.95, alpha:1.0)
-
+    private var downloadImageProcess: DownloaderImageProtocol?
     
     public func set(textMessage text: String, isMine: Bool, isRead: Bool, attachments: [AttachmentMessage]?) {
+        downloadImageProcess = DownloaderImage()
         self.message.text = text
         self.prepareUI(isMine: isMine, isRead: isRead)
         attachments?.forEach() {
-            let attributedString = NSMutableAttributedString()
-            let imgAttachment = NSTextAttachment()
-            imgAttachment.image = $0.img
-            imgAttachment.bounds.size = $0.img!.size
-            attributedString.append(NSAttributedString(attachment: imgAttachment))
-            self.message.attributedText = attributedString
+            self.message.text = "\(text)\n\n\($0.text!)"
+            let width = $0.widthImg.doubleValue
+            let height = $0.heightImg.doubleValue
+            downloadImageProcess?.download(imageWithImagePath: $0.url!) { [weak self] (image) in
+                DispatchQueue.main.async {
+                    let imageView = UIImageView(image: image)
+                    imageView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+                    self?.bubbleMessage.addSubview(imageView)
+                }
+            }
         }
     }
     
