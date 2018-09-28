@@ -15,11 +15,9 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
     private var key: String?
     private let serialQueue: DispatchQueue
     private let session = URLSession(configuration: URLSessionConfiguration.default)
-    private var downloadImageProcess: DownloaderImageProtocol?
     
     init() {
         serialQueue = DispatchQueue(label: "queue")
-        downloadImageProcess = DownloaderImage()
     }
     
     // MARK: LongPoll
@@ -199,14 +197,11 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
                 switch $0["type"] as! String {
                 case "photo":
                     let photo = $0["photo"] as! Dictionary<String, Any>
-                    //хз, надо сначала загрузить а потом вернуть
-                    self.downloadImageProcess?.download(imageWithImagePath: photo["photo_130"] as! String,
-                                                        name: (photo["id"] as! NSNumber).stringValue) { (image) in
-                                                            attachmentsToReturn.append(AttachmentMessage(text: photo["text"] as? String,
-                                                                                                         img: image,
-                                                                                                         url: photo["photo_604"] as? String,
-                                                                                                         id: photo["id"] as! NSNumber))
-                    }
+                    attachmentsToReturn.append(AttachmentMessage(text: photo["text"] as? String,
+                                                                 url: photo["photo_130"] as? String,
+                                                                 id: photo["id"] as! NSNumber,
+                                                                 widthImg: photo["width"] as! NSNumber,
+                                                                 heightImg: photo["height"] as! NSNumber))
                     //                case "video":
                     //                case "audio":
                     //                case "doc":

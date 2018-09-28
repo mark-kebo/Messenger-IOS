@@ -53,8 +53,7 @@ class FriendsListController: UIViewController, UITableViewDelegate, UITableViewD
         let cell:FriendsListTableViewCell = self.friendsList.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! FriendsListTableViewCell
         cell.set(name: "\(friend.name!) \(friend.surname!)")
         cell.set(activity: (self.filteredData[indexPath.row].isOnline)!)
-        downloadImageProcess?.download(imageWithImagePath: friend.avaImgUrl!,
-                                       name: "\(friend.name!)\(friend.surname!)") { (image) in
+        downloadImageProcess?.download(imageWithImagePath: friend.avaImgUrl!) { (image) in
                                             cell.set(avatar: image)
                                             cell.prepareForReuse()
         }

@@ -472,8 +472,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="paper-plane" width="22" height="22"/>
-        <image name="user" width="22" height="22"/>
+        <image name="paper-plane" width="8" height="8"/>
+        <image name="user" width="8" height="8"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="sRg-l9-Jss"/>

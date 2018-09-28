@@ -80,8 +80,7 @@ class MessagesController: UIViewController, UITableViewDelegate, UITableViewData
         cell.set(textLastMessage: self.filteredMessages[indexPath.row].lastMessage,
                  isRead: self.filteredMessages[indexPath.row].isSentRead!)
         cell.set(countUnreadMessages: (self.filteredMessages[indexPath.row].unreadCount)!)
-        downloadImageProcess?.download(imageWithImagePath: message.person.avaImgUrl!,
-                                            name: "\(message.person.name!)\(message.person.surname!)") { (image) in
+        downloadImageProcess?.download(imageWithImagePath: message.person.avaImgUrl!) { (image) in
                                                 cell.setAvatar(image: image)
                                                 cell.prepareForReuse()
         }
