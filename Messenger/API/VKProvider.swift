@@ -195,23 +195,17 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
             var attachmentsToReturn = [AttachmentMessage]()
             attachments.forEach {
                 switch $0["type"] as! String {
-                case "photo":
-                    let photo = $0["photo"] as! Dictionary<String, Any>
-                    attachmentsToReturn.append(AttachmentMessage(text: photo["text"] as? String,
-                                                                 url: photo["photo_130"] as? String,
-                                                                 id: photo["id"] as! NSNumber,
-                                                                 widthImg: photo["width"] as! NSNumber,
-                                                                 heightImg: photo["height"] as! NSNumber))
-                    //                case "video":
-                    //                case "audio":
-                    //                case "doc":
-                    //                case "link":
-                    //                case "market":
-                    //                case "market_album":
-                    //                case "wall":
-                    //                case "wall_reply":
-                    //                case "sticker":
-                //                case "gift":
+                case "photo": attachmentsToReturn.append(get(attachmentsBy: "photo", attachment: $0))
+                case "video": attachmentsToReturn.append(get(attachmentsBy: "video", attachment: $0))
+                case "audio": attachmentsToReturn.append(get(attachmentsBy: "audio", attachment: $0))
+                case "doc": attachmentsToReturn.append(get(attachmentsBy: "doc", attachment: $0))
+                case "link": attachmentsToReturn.append(get(attachmentsBy: "link", attachment: $0))
+                case "market": attachmentsToReturn.append(get(attachmentsBy: "market", attachment: $0))
+                case "market_album": attachmentsToReturn.append(get(attachmentsBy: "market_album", attachment: $0))
+                case "wall": attachmentsToReturn.append(get(attachmentsBy: "wall", attachment: $0))
+                case "wall_reply": attachmentsToReturn.append(get(attachmentsBy: "wall_reply", attachment: $0))
+                case "sticker": attachmentsToReturn.append(get(attachmentsBy: "sticker", attachment: $0))
+                case "gift": attachmentsToReturn.append(get(attachmentsBy: "gift", attachment: $0))
                 default:
                     break
                 }
@@ -220,6 +214,15 @@ class VKProvider: FriendsListProviderProtocol, MessagesProviderProtocol, Private
         } else {
             return nil
         }
+    }
+    
+    private func get(attachmentsBy object: String, attachment: Dictionary<String, Any>) -> AttachmentMessage {
+        let photo = attachment[object] as! Dictionary<String, Any>
+        return AttachmentMessage(text: photo["text"] as? String,
+                                 url: photo["photo_130"] as? String,
+                                 id: photo["id"] as? NSNumber,
+                                 widthImg: photo["width"] as? NSNumber,
+                                 heightImg: photo["height"] as? NSNumber)
     }
     
     public func delete(chatBy id: NSNumber) {
