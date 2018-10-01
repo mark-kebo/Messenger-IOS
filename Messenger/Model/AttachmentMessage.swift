@@ -11,7 +11,7 @@ import UIKit
 struct AttachmentMessage {
     var text: String?
     var url: String?
-    var id: NSNumber
-    var widthImg: NSNumber
-    var heightImg: NSNumber
+    var id: NSNumber?
+    var widthImg: NSNumber?
+    var heightImg: NSNumber?
 }

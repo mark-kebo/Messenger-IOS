@@ -19,21 +19,18 @@ class PrivateMessagesListTableViewCell: UITableViewCell {
     private var downloadImageProcess: DownloaderImageProtocol?
     
     public func set(textMessage text: String, isMine: Bool, isRead: Bool, attachments: [AttachmentMessage]?) {
-        downloadImageProcess = DownloaderImage()
-        self.message.text = text
-        self.prepareUI(isMine: isMine, isRead: isRead)
-        attachments?.forEach() {
-            self.message.text = "\(text)\n\n\($0.text!)"
-            let width = $0.widthImg.doubleValue
-            let height = $0.heightImg.doubleValue
-            downloadImageProcess?.download(imageWithImagePath: $0.url!) { [weak self] (image) in
-                DispatchQueue.main.async {
-                    let imageView = UIImageView(image: image)
-                    imageView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-                    self?.bubbleMessage.addSubview(imageView)
+        if attachments == nil {
+            self.message.text = text
+        } else {
+            var attachmentsUrl = [String]()
+            attachments?.forEach() {
+                if let url = $0.url {
+                    attachmentsUrl.append("\(url)\n")
                 }
             }
+            self.message.text = "\(text)\n\n\(attachments?.first!.text ?? "")\n\(attachmentsUrl.reduce("") { $0 + $1 })"
         }
+        self.prepareUI(isMine: isMine, isRead: isRead)
     }
     
     private func prepareUI(isMine: Bool, isRead: Bool) {
